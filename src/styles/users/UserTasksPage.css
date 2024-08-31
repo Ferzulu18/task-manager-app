@@ -1,0 +1,37 @@
+.kanban-container {
+  padding: 16px;
+}
+
+.create-task-button {
+  margin-bottom: 16px;
+}
+
+.kanban-columns {
+  display: flex;
+  justify-content: space-between;
+}
+
+.kanban-column {
+  background: #f0f2f5;
+  padding: 16px;
+  border-radius: 8px;
+  height: 100%;
+  overflow-y: auto;
+}
+
+.dropdown-icon {
+  font-size: 16px;
+}
+
+.kanban-card {
+  margin-bottom: 16px;
+}
+
+.kanban-card-due-date {
+  color: #1890ff;
+  font-weight: bold;
+}
+
+.kanban-card-description {
+  color: #595959;
+}

@@ -1,0 +1,53 @@
+/* src/styles/Header.css */
+.header {
+  padding: 1rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  background-color: #001529;
+}
+
+.header-background {
+  background-color: #001529; /* Fondo oscuro para el header */
+}
+
+.nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.menu-button {
+  color: white;
+  margin-left: 16px;
+}
+
+.drawer-menu .ant-drawer-content {
+  background-color: #ffffff; /* Fondo blanco para el drawer */
+}
+
+.drawer-menu .ant-menu {
+  background-color: #ffffff; /* Fondo blanco para el menú dentro del drawer */
+}
+
+.drawer-menu .ant-menu-item {
+  color: #001529; /* Color del texto en el menú del drawer */
+}
+
+.drawer-menu .ant-menu-item:hover {
+  color: #001529; /* Color del texto al pasar el cursor */
+  background-color: #f0f0f0; /* Fondo al pasar el cursor sobre un ítem del menú */
+  border-bottom: 2px solid #1890ff; /* Línea debajo del ítem del menú al pasar el cursor */
+}
+
+.drawer-menu .ant-menu-item-selected {
+  color: #001529; /* Color del texto del ítem seleccionado */
+  background-color: #ffffff; /* Fondo blanco para el ítem seleccionado */
+  border-bottom: 2px solid #1890ff; /* Línea debajo del ítem seleccionado */
+}
+
+.drawer-menu .ant-menu-item::after {
+  display: none; /* Quita la línea inferior predeterminada de Ant Design */
+}
+
+.avatar {
+  cursor: pointer;
+}

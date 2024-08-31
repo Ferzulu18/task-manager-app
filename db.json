@@ -1,0 +1,77 @@
+{
+  "tasks": [
+    {
+      "id": "48ac",
+      "title": "Tarea de prueba 1",
+      "dueDate": "2024-08-31T05:00:00.000Z",
+      "label": "low",
+      "userId": "eb20",
+      "status": "todo"
+    },
+    {
+      "id": "7335",
+      "title": "Tarea de prueba 2",
+      "dueDate": "2024-08-31T05:00:00.000Z",
+      "label": "low",
+      "userId": "eb20",
+      "status": "wip"
+    },
+    {
+      "id": "d589",
+      "dueDate": "2024-08-30T05:00:00.000Z",
+      "label": "medium",
+      "title": "Hola mundo",
+      "userId": "eb20",
+      "status": "todo"
+    },
+    {
+      "id": "2ebe",
+      "title": "Hola",
+      "dueDate": "2024-08-31T05:00:00.000Z",
+      "label": "medium",
+      "userId": "eb20",
+      "status": "todo"
+    },
+    {
+      "id": "ccfd",
+      "title": "hola",
+      "description": "hola",
+      "dueDate": "2024-08-23T05:00:00.000Z",
+      "label": "low",
+      "userId": "eb20",
+      "status": "todo"
+    },
+    {
+      "id": "1b84",
+      "label": "important",
+      "dueDate": "2024-08-06T05:00:00.000Z",
+      "title": "Hello",
+      "userId": "eb20",
+      "status": "wip"
+    }
+  ],
+  "users": [
+    {
+      "id": "1",
+      "name": "Administrador",
+      "email": "admin@example.com",
+      "password": "admin123",
+      "role": "admin"
+    },
+    {
+      "id": "439d",
+      "name": "Alexander",
+      "email": "alex@example.com",
+      "password": "alex123$",
+      "role": "user"
+    },
+    {
+      "id": "eb20",
+      "name": "Fernando",
+      "email": "fernando@example.com",
+      "password": "fernando123$",
+      "role": "user"
+    }
+  ],
+  "tokens": []
+}
