@@ -11,8 +11,8 @@ import {
   message,
 } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
-import KanbanCard from '../../components/KanbanCard';
-import { AuthContext } from '../../context/AuthContext';
+import KanbanCard from '../components/KanbanCard';
+import { AuthContext } from '../context/AuthContext';
 import { useNavigate, useLocation } from 'react-router-dom';
 import {
   fetchTasks,
@@ -21,10 +21,9 @@ import {
   deleteTask,
   updateTaskStatus,
   checkTaskLimit,
-} from '../../services/userTaskService';
+} from '../services/userService';
 import dayjs from 'dayjs';
-import { disabledDate } from '../../utils/dateUtils';
-import '../../styles/users/UserTasksPage.css';
+import { disabledDate } from '../utils/dateUtils';
 
 const { Option } = Select;
 
@@ -38,7 +37,7 @@ function UserTasksPage() {
     title: '',
     description: '',
     dueDate: null,
-    label: '',
+    priority: '', // Cambio de label a priority
   });
   const [draggedTask, setDraggedTask] = useState(null);
   const [tasks, setTasks] = useState({
@@ -46,7 +45,7 @@ function UserTasksPage() {
     wip: [],
     done: [],
   });
-  const labelColors = {
+  const priorityColors = {
     high: '#ff4d4f',
     medium: '#faad14',
     low: '#36cfc9',
@@ -66,13 +65,13 @@ function UserTasksPage() {
       }
     };
 
-    if (!authenticated) {
+    if (!authenticated || !user || user.role !== 'user') {
       const from = location.state?.from?.pathname || '/';
       navigate(from);
     } else {
       fetchUserTasks();
     }
-  }, [authenticated, navigate, location, setTasks, user]);
+  }, [authenticated, navigate, location, user]);
 
   const refreshUserTasks = async () => {
     try {
@@ -94,7 +93,13 @@ function UserTasksPage() {
 
   const handleCancel = () => {
     setIsModalVisible(false);
-    setTask({ title: '', description: '', dueDate: null, label: '', id: null });
+    setTask({
+      title: '',
+      description: '',
+      dueDate: null,
+      priority: '',
+      id: null,
+    });
   };
 
   const handleOk = async () => {
@@ -117,14 +122,20 @@ function UserTasksPage() {
           message.error('Has alcanzado el límite máximo de tareas');
           return;
         }
-        await createTask({ ...task, userId: user.id, status: 'por hacer' });
+        await createTask({ ...task, userId: user.id, status: 'todo' });
         message.success('Tarea creada con éxito');
       } catch (error) {
         message.error('No se pudo crear la tarea');
       }
     }
     setIsModalVisible(false);
-    setTask({ title: '', description: '', dueDate: null, label: '', id: null });
+    setTask({
+      title: '',
+      description: '',
+      dueDate: null,
+      priority: '',
+      id: null,
+    });
     refreshUserTasks(); // Refrescar tareas
   };
 
@@ -164,26 +175,25 @@ function UserTasksPage() {
   };
 
   const handleDateChange = (date) => {
-    // Actualiza el estado con la fecha seleccionada o con null si no se selecciona ninguna fecha
     setTask({ ...task, dueDate: date ? date.toISOString() : null });
   };
 
   return (
-    <div className="kanban-container">
+    <div className="p-4">
       <Button
         type="primary"
         icon={<PlusOutlined />}
         onClick={() => showModal()}
-        className="create-task-button"
+        className="mb-4"
       >
         Crear Tarea
       </Button>
 
-      <Row gutter={16} className="kanban-columns">
+      <Row gutter={16}>
         <Col span={8}>
           <Card
             title="Por hacer"
-            className="kanban-column"
+            className="bg-gray-100 p-4 rounded-lg h-full"
             onDragOver={(e) => e.preventDefault()}
             onDrop={() => handleDrop('todo')}
           >
@@ -195,14 +205,14 @@ function UserTasksPage() {
                 onDoubleClick={() => showModal(task)}
                 onEdit={() => showModal(task)}
                 onDelete={() => confirmDelete(task.id)}
-                borderColors={labelColors}
+                borderColors={priorityColors} // Cambiado labelColors por priorityColors
               />
             ))}
             <Button
               type="link"
               icon={<PlusOutlined />}
               onClick={() => showModal()}
-              className="create-task-button"
+              className="mt-4"
             >
               Nuevo
             </Button>
@@ -211,7 +221,7 @@ function UserTasksPage() {
         <Col span={8}>
           <Card
             title="En Proceso"
-            className="kanban-column"
+            className="bg-gray-100 p-4 rounded-lg h-full"
             onDragOver={(e) => e.preventDefault()}
             onDrop={() => handleDrop('wip')}
           >
@@ -223,7 +233,7 @@ function UserTasksPage() {
                 onDoubleClick={() => showModal(task)}
                 onEdit={() => showModal(task)}
                 onDelete={() => confirmDelete(task.id)}
-                borderColors={labelColors}
+                borderColors={priorityColors} // Cambiado labelColors por priorityColors
               />
             ))}
           </Card>
@@ -231,7 +241,7 @@ function UserTasksPage() {
         <Col span={8}>
           <Card
             title="Hecho"
-            className="kanban-column"
+            className="bg-gray-100 p-4 rounded-lg h-full"
             onDragOver={(e) => e.preventDefault()}
             onDrop={() => handleDrop('done')}
           >
@@ -243,7 +253,7 @@ function UserTasksPage() {
                 onDoubleClick={() => showModal(task)}
                 onEdit={() => showModal(task)}
                 onDelete={() => confirmDelete(task.id)}
-                borderColors={labelColors}
+                borderColors={priorityColors} // Cambiado labelColors por priorityColors
               />
             ))}
           </Card>
@@ -262,29 +272,31 @@ function UserTasksPage() {
           placeholder="Título"
           value={task.title}
           onChange={(e) => setTask({ ...task, title: e.target.value })}
+          className="mt-2 w-full"
         />
         <Input.TextArea
           placeholder="Descripción"
           value={task.description}
           onChange={(e) => setTask({ ...task, description: e.target.value })}
-          className="mt-2"
+          className="mt-2 w-full"
         />
         <DatePicker
           format="YYYY-MM-DD"
           value={task.dueDate ? dayjs(task.dueDate) : null}
           onChange={handleDateChange}
           disabledDate={disabledDate}
-          className="mt-2"
+          className="mt-2 w-full"
+          placeholder="Fecha de vencimiento"
         />
         <Select
-          placeholder="Etiqueta"
-          value={task.label}
-          onChange={(value) => setTask({ ...task, label: value })}
-          className="mt-2 custom-select"
+          placeholder="Prioridad" // Cambiado de Etiqueta a Prioridad
+          value={task.priority}
+          onChange={(value) => setTask({ ...task, priority: value })}
+          className="mt-2 w-full"
         >
-          <Option value="high">Crítica</Option>
-          <Option value="medium">Moderada</Option>
-          <Option value="low">Menor</Option>
+          <Option value="high">Alta</Option>
+          <Option value="medium">Media</Option>
+          <Option value="low">Baja</Option>
         </Select>
       </Modal>
     </div>

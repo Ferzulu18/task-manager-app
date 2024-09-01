@@ -1,9 +1,8 @@
-// src/pages/LoginPage.js
 import React, { useContext, useEffect, useState } from 'react';
 import { Form, Input, Button, message, Modal } from 'antd';
 import FormButton from '../../components/FormButton';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { loginUser, sendResetPassword } from '../../services/userService';
+import { loginUser, sendResetPassword } from '../../services/authService';
 import { AuthContext } from '../../context/AuthContext';
 
 function LoginPage() {
@@ -27,7 +26,6 @@ function LoginPage() {
       if (user) {
         login(user);
         message.success('Inicio de sesión exitoso');
-
         const from = location.state?.from?.pathname || '/';
         navigate(from);
       } else {
@@ -53,15 +51,10 @@ function LoginPage() {
   };
 
   return (
-    <div className="flex justify-center items-center h-screen bg-gray-100 p-4">
-      <div className="w-full max-w-md">
-        <h1 className="text-2xl font-bold mb-4 text-center">Iniciar Sesión</h1>
-        <Form
-          form={form}
-          onFinish={handleLogin}
-          layout="vertical"
-          className="bg-white p-4 rounded shadow-md"
-        >
+    <div className="flex items-center justify-center h-screen bg-gray-100 p-4">
+      <div className="w-full max-w-md bg-white p-6 rounded-lg shadow-md">
+        <h1 className="text-2xl font-bold mb-6 text-center">Iniciar Sesión</h1>
+        <Form form={form} onFinish={handleLogin} layout="vertical">
           <Form.Item
             label="Correo Electrónico"
             name="email"
@@ -90,12 +83,15 @@ function LoginPage() {
             </Button>
           </Form.Item>
           <Form.Item>
-            <Link to="/users/register">
+            <Link to="/auth/register" className="text-blue-500 hover:underline">
               ¿No tienes una cuenta? Regístrate aquí
             </Link>
           </Form.Item>
           <Form.Item>
-            <Link onClick={() => setIsModalVisible(true)}>
+            <Link
+              onClick={() => setIsModalVisible(true)}
+              className="text-blue-500 hover:underline"
+            >
               ¿Olvidaste tu contraseña? Recupérala aquí
             </Link>
           </Form.Item>
@@ -124,7 +120,7 @@ function LoginPage() {
               <Input />
             </Form.Item>
             <Form.Item>
-              <FormButton type="primary" htmlType="submit">
+              <FormButton type="primary" htmlType="submit" className="w-full">
                 Enviar Correo de Recuperación
               </FormButton>
             </Form.Item>

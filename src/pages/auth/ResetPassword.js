@@ -1,8 +1,7 @@
-// src/pages/ResetPasswordPage.js
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Form, Input, Button, message } from 'antd';
-import { resetPassword } from '../../services/userService';
+import { resetPassword } from '../../services/authService';
 
 const ResetPasswordPage = () => {
   const navigate = useNavigate();
@@ -15,7 +14,7 @@ const ResetPasswordPage = () => {
     try {
       await resetPassword(token, values.password);
       message.success('Contraseña restablecida exitosamente');
-      navigate('/users/login');
+      navigate('/auth/login');
     } catch (error) {
       message.error('Error al restablecer la contraseña');
       console.error(error);
@@ -23,17 +22,12 @@ const ResetPasswordPage = () => {
   };
 
   return (
-    <div className="flex justify-center items-center h-screen bg-gray-100 p-4">
-      <div className="w-full max-w-md">
-        <h1 className="text-2xl font-bold mb-4 text-center">
+    <div className="flex items-center justify-center h-screen bg-gray-100 p-4">
+      <div className="w-full max-w-md bg-white p-6 rounded-lg shadow-md">
+        <h1 className="text-2xl font-bold mb-6 text-center">
           Restablecer Contraseña
         </h1>
-        <Form
-          form={form}
-          onFinish={handleResetPassword}
-          layout="vertical"
-          className="bg-white p-4 rounded shadow-md"
-        >
+        <Form form={form} onFinish={handleResetPassword} layout="vertical">
           <Form.Item
             label="Nueva Contraseña"
             name="password"

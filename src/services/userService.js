@@ -1,115 +1,74 @@
-// src/services/userService.js
 import axios from 'axios';
-import { sendPasswordReset, generateUniqueToken } from '../utils/mailtrapUtils';
 
-const API_URL = 'http://localhost:5000/users';
-const API_URL_TOKEN = 'http://localhost:5000/tokens';
+const API_URL = 'http://localhost:5000/tasks';
 
-const getUserByEmail = async (email) => {
+// Obtener todas las tareas de un usuario específico
+export const fetchTasks = async (userId) => {
   try {
-    const response = await axios.get(`${API_URL}`, {
-      params: { email },
+    const response = await axios.get(API_URL, {
+      params: { userId },
     });
-    return response.data[0];
+    return response.data;
   } catch (error) {
-    console.error('Error al obtener el usuario:', error);
-    throw new Error('Error al obtener el usuario');
-  }
-};
-
-const updatePassword = async (email, newPassword) => {
-  try {
-    const user = await getUserByEmail(email);
-    if (!user) {
-      throw new Error('Usuario no encontrado');
-    }
-
-    const response = await axios.patch(`${API_URL}/${user.id}`, {
-      password: newPassword,
-    });
-
-    return response;
-  } catch (error) {
+    console.error('Error al obtener las tareas:', error);
     throw error;
   }
 };
 
-export const registerUser = async (userData) => {
+// Crear una tarea
+export const createTask = async (task) => {
   try {
-    const { confirm, ...userWithoutSensitiveInfo } = userData;
     const response = await axios.post(API_URL, {
-      ...userWithoutSensitiveInfo,
-      role: 'user',
+      ...task,
+      status: 'todo',
     });
-    return response;
+    return response.data;
   } catch (error) {
+    console.error('Error al crear la tarea:', error);
     throw error;
   }
 };
 
-export const loginUser = async ({ email, password }) => {
+// Modificar una tarea
+export const updateTask = async (taskId, updates) => {
   try {
-    const user = await getUserByEmail(email);
-    // console.log(user);
-
-    // Find user with matching email and password
-    if (!user || user.email !== email || user.password !== password) {
-      return null;
-    }
-
-    return user;
+    const response = await axios.patch(`${API_URL}/${taskId}`, updates);
+    return response.data;
   } catch (error) {
+    console.error('Error al modificar la tarea:', error);
     throw error;
   }
 };
 
-export const sendResetPassword = async (email) => {
+// Modificar el estado de una tarea
+export const updateTaskStatus = async (taskId, status) => {
   try {
-    const token = generateUniqueToken();
-    const response = await axios.post(API_URL_TOKEN, {
-      token: token,
-      email: email,
-    });
-    if (response.status !== 201) {
-      throw new Error('Error al registrar token de recuperación');
-    }
-    await sendPasswordReset(token, email);
+    const response = await axios.patch(`${API_URL}/${taskId}`, { status });
+    return response.data;
   } catch (error) {
-    throw new Error('Error al enviar el correo de recuperación');
+    console.error('Error al modificar el estado de la tarea:', error);
+    throw error;
   }
 };
 
-export const resetPassword = async (token, newPassword) => {
-  let tokenData;
+// Eliminar una tarea
+export const deleteTask = async (taskId) => {
   try {
-    // Get token data
-    const response = await axios.get(`${API_URL_TOKEN}`, {
-      params: { token },
-    });
-    tokenData = response.data[0];
-
-    if (!tokenData || !tokenData.token || !tokenData.email) {
-      throw new Error('Token inválido');
-    }
-
-    // Validate token by checking if user exists
-    const user = await getUserByEmail(tokenData.email);
-    if (!user) {
-      throw new Error('Token inválido: el usuario no existe');
-    }
-
-    // Update the password
-    await updatePassword(tokenData.email, newPassword);
+    await axios.delete(`${API_URL}/${taskId}`);
   } catch (error) {
+    console.error('Error al eliminar la tarea:', error);
     throw error;
-  } finally {
-    // Always delete the token
-    if (tokenData) {
-      try {
-        await axios.delete(`${API_URL_TOKEN}/${tokenData.id}`);
-      } catch (deleteError) {
-        console.error('Error al eliminar el token:', deleteError);
-      }
-    }
+  }
+};
+
+// Verificar el límite de tareas
+export const checkTaskLimit = async (userId) => {
+  try {
+    const response = await axios.get(API_URL, { params: { userId } });
+    const tasks = response.data;
+    return tasks.length >= 50;
+  } catch (error) {
+    console.error('Error al verificar el límite de tareas:', error);
+    throw error;
   }
 };

@@ -3,16 +3,19 @@
     {
       "id": "48ac",
       "title": "Tarea de prueba 1",
-      "dueDate": "2024-09-07T05:00:00.000Z",
-      "label": "low",
+      "dueDate": "2024-09-08T05:00:00.000Z",
+      "priority": "low",
       "userId": "eb20",
-      "status": "todo"
+      "status": "todo",
+      "userEmail": "fernando@example.com",
+      "userName": "Fernando",
+      "userRole": "user"
     },
     {
       "id": "7335",
       "title": "Tarea de prueba 2",
       "dueDate": "2024-08-31T05:00:00.000Z",
-      "label": "low",
+      "priority": "low",
       "userId": "eb20",
       "status": "done",
       "description": "Esta es la descripción de esta tarea, para probar que actualice bien"
@@ -20,7 +23,7 @@
     {
       "id": "d589",
       "dueDate": "2024-08-30T05:00:00.000Z",
-      "label": "medium",
+      "priority": "medium",
       "title": "Hola mundo",
       "userId": "eb20",
       "status": "todo"
@@ -30,13 +33,13 @@
       "title": "hola",
       "description": "hola",
       "dueDate": "2024-09-01T05:00:00.000Z",
-      "label": "low",
+      "priority": "low",
       "userId": "eb20",
       "status": "todo"
     },
     {
       "id": "1b84",
-      "label": "high",
+      "priority": "high",
       "dueDate": "2024-10-01T05:00:00.000Z",
       "title": "Hello",
       "userId": "eb20",
@@ -49,6 +52,59 @@
       "title": "Tarea nueva!",
       "userId": "eb20",
       "status": "todo"
+    },
+    {
+      "id": "650e",
+      "title": "Tarea 1",
+      "description": "Tarea 1",
+      "dueDate": "2024-09-02T05:00:00.000Z",
+      "priority": "medium",
+      "userId": "439d",
+      "status": "todo"
+    },
+    {
+      "id": "2aa6",
+      "title": "Tarea 2",
+      "dueDate": "2024-09-19T05:00:00.000Z",
+      "priority": "low",
+      "userId": "439d",
+      "status": "wip"
+    },
+    {
+      "id": "40c9",
+      "title": "Tarea 3",
+      "description": "Hola mundo, tengo que hacer esta tarea cuanto antes",
+      "dueDate": "2024-09-01T05:00:00.000Z",
+      "priority": "high",
+      "userId": "439d",
+      "status": "done"
+    },
+    {
+      "id": "bdca",
+      "title": "Tarea 4",
+      "dueDate": "2024-08-18T05:00:00.000Z",
+      "priority": "high",
+      "userId": "439d",
+      "status": "todo"
+    },
+    {
+      "id": "e611",
+      "title": "Tarea 6",
+      "userId": "439d",
+      "status": "todo",
+      "userEmail": "alex@example.com",
+      "userName": "Alexander",
+      "userRole": "user",
+      "description": "Criterios de aceptación",
+      "priority": "high",
+      "dueDate": "2024-09-05T05:00:00.000Z"
+    },
+    {
+      "id": "934e",
+      "title": "Tarea para alexander",
+      "dueDate": "2024-09-20T05:00:00.000Z",
+      "priority": "medium",
+      "userId": "439d"
     }
   ],
   "users": [
@@ -56,7 +112,7 @@
       "id": "0001",
       "name": "Administrador",
       "email": "admin@example.com",
-      "password": "admin123",
+      "password": "admin123*",
       "role": "admin"
     },
     {

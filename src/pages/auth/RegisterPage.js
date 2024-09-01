@@ -1,8 +1,7 @@
-// src/pages/RegisterPage.js
 import React, { useContext, useEffect, useState } from 'react';
 import { message, Form, Input, Button } from 'antd';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { registerUser } from '../../services/userService';
+import { registerUser } from '../../services/authService';
 import { AuthContext } from '../../context/AuthContext';
 
 function RegisterPage() {
@@ -25,7 +24,7 @@ function RegisterPage() {
 
       if (response.status === 201) {
         message.success('Registro exitoso');
-        navigate('/users/login');
+        navigate('/auth/login');
       } else {
         message.error('Error en el registro');
       }
@@ -37,13 +36,13 @@ function RegisterPage() {
   };
 
   return (
-    <div className="flex justify-center items-center h-screen bg-gray-100">
+    <div className="flex items-center justify-center h-screen bg-gray-100 p-4">
       <Form
         onFinish={handleRegister}
-        className="w-full max-w-md"
+        className="w-full max-w-md bg-white p-6 rounded-lg shadow-md"
         layout="vertical"
       >
-        <h1 className="text-2xl font-bold mb-4 text-center">
+        <h1 className="text-2xl font-bold mb-6 text-center">
           Registro de Usuario
         </h1>
 

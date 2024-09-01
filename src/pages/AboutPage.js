@@ -5,16 +5,15 @@ import {
   DashboardOutlined,
   UserSwitchOutlined,
 } from '@ant-design/icons';
-import '../styles/AboutPage.css';
 import kanbanImage from '../assets/images/kanban.jpg';
 
 const AboutPage = () => {
   return (
-    <div className="about-page">
-      <h1 className="about-title">Qué Hacemos</h1>
-      <hr className="about-divider" />
+    <div className="p-5 max-w-screen-lg mx-auto">
+      <h1 className="text-4xl font-bold mb-3 text-left">Qué Hacemos</h1>
+      <hr className="w-24 border-2 border-blue-500 mb-8" />
 
-      <p className="about-description">
+      <p className="text-lg text-gray-700 leading-relaxed mb-10 text-justify">
         En nuestra plataforma, nos dedicamos a facilitar la vida de nuestros
         usuarios al proporcionar una herramienta robusta y visualmente intuitiva
         para la gestión de tareas. Ya seas un administrador que necesita
@@ -23,13 +22,15 @@ const AboutPage = () => {
         adaptarse a tus necesidades.
       </p>
 
-      <Row gutter={[16, 16]} className="about-features">
+      <Row gutter={[16, 16]} className="mb-10">
         <Col xs={24} sm={12} md={8}>
           <Card
-            className="feature-card"
+            className="text-center"
             title="Gestión Eficiente"
             bordered={false}
-            cover={<CheckCircleOutlined className="feature-icon" />}
+            cover={
+              <CheckCircleOutlined className="text-5xl text-blue-500 mb-5" />
+            }
           >
             <p>
               Permite a los usuarios crear, editar y gestionar sus tareas de
@@ -39,10 +40,12 @@ const AboutPage = () => {
         </Col>
         <Col xs={24} sm={12} md={8}>
           <Card
-            className="feature-card"
+            className="text-center"
             title="Tablero Kanban"
             bordered={false}
-            cover={<DashboardOutlined className="feature-icon" />}
+            cover={
+              <DashboardOutlined className="text-5xl text-blue-500 mb-5" />
+            }
           >
             <p>
               Organiza tus tareas visualmente con nuestro tablero estilo Kanban,
@@ -53,10 +56,12 @@ const AboutPage = () => {
         </Col>
         <Col xs={24} sm={12} md={8}>
           <Card
-            className="feature-card"
+            className="text-center"
             title="Roles Diferenciados"
             bordered={false}
-            cover={<UserSwitchOutlined className="feature-icon" />}
+            cover={
+              <UserSwitchOutlined className="text-5xl text-blue-500 mb-5" />
+            }
           >
             <p>
               Funcionalidades exclusivas para administradores y usuarios, cada
@@ -66,11 +71,11 @@ const AboutPage = () => {
         </Col>
       </Row>
 
-      <div className="about-image-container">
+      <div className="text-center mt-10">
         <img
           src={kanbanImage}
           alt="Tablero de gestión de tareas"
-          className="about-image"
+          className="max-w-full h-auto rounded-lg shadow-lg"
         />
       </div>
     </div>

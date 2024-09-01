@@ -1,5 +1,3 @@
-// src/utils/authUtils.js
-
 // Function to get authentication status
 export const isAuthenticated = () => {
   return localStorage.getItem('isAuthenticated') === 'true';
@@ -27,5 +25,5 @@ export const storeLogin = (user) => {
 export const clearLogin = () => {
   localStorage.removeItem('user');
   localStorage.removeItem('isAuthenticated');
-  window.location.href = '/users/login';
+  window.location.href = '/auth/login';
 };

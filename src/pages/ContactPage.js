@@ -3,7 +3,6 @@ import { Form, Input, message } from 'antd';
 import { MailOutlined, PhoneOutlined, HomeOutlined } from '@ant-design/icons';
 import FormButton from '../components/FormButton';
 import { sendContactEmail } from '../utils/mailtrapUtils';
-import '../styles/ContactPage.css';
 
 const ContactPage = () => {
   const [loading, setLoading] = useState(false);
@@ -25,9 +24,9 @@ const ContactPage = () => {
   };
 
   return (
-    <div className="contact-page">
-      <h1 className="contact-title">Contáctenos</h1>
-      <hr className="contact-divider" />
+    <div className="p-5 max-w-4xl mx-auto">
+      <h1 className="text-4xl font-bold mb-3">Contáctenos</h1>
+      <hr className="w-24 border-2 border-blue-900 mb-8" />
       <Form
         name="contact"
         onFinish={handleContact}
@@ -86,29 +85,28 @@ const ContactPage = () => {
         </Form.Item>
       </Form>
 
-      <div className="contact-container">
-        <h2 className="contact-subtitle">Información de Contacto Adicional</h2>
-        <p className="contact-subtitle-item">
-          <MailOutlined className="contact-subtitle-icon" />
+      <div className="bg-gray-100 p-1 mt-10 rounded-lg">
+        <h2 className="text-2xl font-bold mb-3">
+          Información de Contacto Adicional
+        </h2>
+        <p className="text-lg mb-3 flex items-center">
+          <MailOutlined className="text-blue-900 mr-3" />
           <strong>Correo Electrónico:</strong>{' '}
-          <a href="mailto:admin@example.com" className="contact-subtitle-text">
+          <a href="mailto:admin@example.com" className="ml-2 text-blue-600">
             admin@example.com
           </a>
         </p>
-        <p className="contact-subtitle-item">
-          <PhoneOutlined className="contact-subtitle-icon" />
+        <p className="text-lg mb-3 flex items-center">
+          <PhoneOutlined className="text-blue-900 mr-3" />
           <strong>Teléfono:</strong>{' '}
-          <a
-            href="https://wa.me/573012345678"
-            className="contact-subtitle-text"
-          >
+          <a href="https://wa.me/573012345678" className="ml-2 text-blue-600">
             +57 301 234 5678
           </a>
         </p>
-        <p className="contact-subtitle-other">
-          <HomeOutlined className="contact-subtitle-icon" />
+        <p className="text-lg flex items-center">
+          <HomeOutlined className="text-blue-900 mr-3" />
           <strong>Dirección:</strong>{' '}
-          <span className="contact-subtitle-text">
+          <span className="ml-2">
             Calle 45 #67-89, El Poblado, Medellín, Colombia
           </span>
         </p>

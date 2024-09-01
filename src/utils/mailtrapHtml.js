@@ -55,7 +55,7 @@ export const getResetContent = (token) => {
         <h1>Recuperación de Contraseña</h1>
         <p>Hola,</p>
         <p>Has solicitado recuperar tu contraseña. Para cambiar tu contraseña, por favor haz clic en el siguiente botón:</p>
-        <a href="http://localhost:3000/users/reset?token=${token}" class="button" target="_blank">Cambiar Contraseña</a>
+        <a href="http://localhost:3000/auth/reset?token=${token}" class="button" target="_blank">Cambiar Contraseña</a>
         <p>Si no solicitaste este cambio, por favor ignora este mensaje.</p>
         <div class="footer">
           <p>Gracias,<br>El equipo de Task Manager</p>

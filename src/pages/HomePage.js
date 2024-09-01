@@ -7,7 +7,6 @@ import {
 } from '@ant-design/icons';
 import CTAButton from '../components/CTAButton';
 import { AuthContext } from '../context/AuthContext';
-import '../styles/HomePage.css';
 
 function HomePage() {
   const { authenticated } = useContext(AuthContext);
@@ -17,64 +16,66 @@ function HomePage() {
   }, [authenticated]);
 
   return (
-    <div className="home-container">
-      <Card className="intro-card">
-        <h1 className="intro-title">
+    <div className="flex flex-col items-center p-8 bg-gray-100">
+      <Card className="w-full max-w-4xl text-center mb-8 p-8">
+        <h1 className="text-3xl font-bold mb-4">
           Bienvenido a la Aplicación de Gestión de Tareas
         </h1>
-        <p className="intro-description">
+        <p className="text-lg mb-4">
           Esta es tu aplicación sencilla para gestionar tareas diarias.
         </p>
         {authenticated ? (
           <>
-            <p className="intro-message">
+            <p className="mb-6">
               Ya estás registrado. Empieza a gestionar tus tareas y aprovecha
               todas las funcionalidades.
             </p>
-            <CTAButton to="/users/dashboard" text="Ir a mi panel de tareas" />
+            <CTAButton to="/dashboard" text="Ir a mi panel de tareas" />
           </>
         ) : (
           <>
-            <p className="intro-message">
+            <p className="mb-6">
               Para comenzar, por favor regístrate en nuestra plataforma o inicia
               sesión si ya tienes una cuenta, y empieza a gestionar tus tareas.
             </p>
-            <div className="cta-buttons">
-              <CTAButton to="/users/register" text="Regístrate Ahora" />
-              <CTAButton to="/users/login" text="Inicia Sesión" />
+            <div className="flex justify-center gap-4 mt-4">
+              <CTAButton to="/auth/register" text="Regístrate Ahora" />
+              <CTAButton to="/auth/login" text="Inicia Sesión" />
             </div>
           </>
         )}
       </Card>
 
-      <div className="services-section">
-        <h2 className="section-title">Servicios Destacados</h2>
+      <div className="w-full max-w-5xl bg-white p-8 shadow-md mb-8">
+        <h2 className="text-2xl font-bold mb-6 text-center">
+          Servicios Destacados
+        </h2>
         <Row gutter={16}>
           <Col span={8}>
-            <Card className="service-card">
-              <SmileOutlined className="service-icon" />
-              <h3 className="service-title">Gestión Eficiente</h3>
-              <p className="service-description">
+            <Card className="text-center p-6 border border-gray-300 rounded-lg">
+              <SmileOutlined className="text-blue-500 text-3xl mb-4" />
+              <h3 className="text-xl font-bold mb-2">Gestión Eficiente</h3>
+              <p className="text-gray-600">
                 Administra tus tareas con facilidad y organiza tu trabajo de
                 manera intuitiva con nuestro tablero estilo Kanban.
               </p>
             </Card>
           </Col>
           <Col span={8}>
-            <Card className="service-card">
-              <StarOutlined className="service-icon" />
-              <h3 className="service-title">Usabilidad Amigable</h3>
-              <p className="service-description">
+            <Card className="text-center p-6 border border-gray-300 rounded-lg">
+              <StarOutlined className="text-blue-500 text-3xl mb-4" />
+              <h3 className="text-xl font-bold mb-2">Usabilidad Amigable</h3>
+              <p className="text-gray-600">
                 Disfruta de una experiencia de usuario fluida y amigable,
                 diseñada para mejorar tu productividad.
               </p>
             </Card>
           </Col>
           <Col span={8}>
-            <Card className="service-card">
-              <UsergroupAddOutlined className="service-icon" />
-              <h3 className="service-title">Colaboración</h3>
-              <p className="service-description">
+            <Card className="text-center p-6 border border-gray-300 rounded-lg">
+              <UsergroupAddOutlined className="text-blue-500 text-3xl mb-4" />
+              <h3 className="text-xl font-bold mb-2">Colaboración</h3>
+              <p className="text-gray-600">
                 Colabora con otros usuarios y gestiona proyectos en equipo de
                 manera eficiente.
               </p>
@@ -83,29 +84,29 @@ function HomePage() {
         </Row>
       </div>
 
-      <div className="testimonials-section">
-        <h2 className="section-title">Testimonios</h2>
-        <div className="testimonials">
-          <div className="testimonial">
-            <p className="testimonial-text">
+      <div className="w-full max-w-5xl bg-white p-8 shadow-md">
+        <h2 className="text-2xl font-bold mb-6 text-center">Testimonios</h2>
+        <div className="flex flex-col items-center">
+          <div className="w-full max-w-3xl p-6 border border-gray-300 rounded-lg mb-4 bg-gray-50">
+            <p className="text-gray-800 mb-2">
               "Esta aplicación ha transformado la forma en que gestiono mis
               tareas. ¡Es muy fácil de usar y me ayuda a mantenerme organizada!"
             </p>
-            <p className="testimonial-author">- Ana G.</p>
+            <p className="text-gray-600 text-right">- Ana G.</p>
           </div>
-          <div className="testimonial">
-            <p className="testimonial-text">
+          <div className="w-full max-w-3xl p-6 border border-gray-300 rounded-lg mb-4 bg-gray-50">
+            <p className="text-gray-800 mb-2">
               "El tablero estilo Kanban es simplemente genial. Me permite
               visualizar mi flujo de trabajo de una manera muy clara."
             </p>
-            <p className="testimonial-author">- Luis P.</p>
+            <p className="text-gray-600 text-right">- Luis P.</p>
           </div>
-          <div className="testimonial">
-            <p className="testimonial-text">
+          <div className="w-full max-w-3xl p-6 border border-gray-300 rounded-lg bg-gray-50">
+            <p className="text-gray-800 mb-2">
               "Me encanta la funcionalidad de colaboración. Trabajar en equipo
               nunca ha sido tan fácil y eficiente."
             </p>
-            <p className="testimonial-author">- Marta R.</p>
+            <p className="text-gray-600 text-right">- Marta R.</p>
           </div>
         </div>
       </div>

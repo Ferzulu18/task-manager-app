@@ -7,7 +7,6 @@ import {
 } from '@ant-design/icons';
 import { formatHumanDate } from '../utils/dateUtils';
 import { truncateText } from '../utils/textUtils';
-import '../styles/KanbanCard.css';
 
 function KanbanCard({
   item,
@@ -17,7 +16,7 @@ function KanbanCard({
   onDelete,
   borderColors,
 }) {
-  const { id, title, description, dueDate, label } = item;
+  const { id, title, description, dueDate, priority } = item;
 
   const menuItems = [
     {
@@ -37,6 +36,7 @@ function KanbanCard({
   const menu = {
     items: menuItems.map((item) => ({
       key: item.key,
+      icon: item.icon,
       label: item.label,
       onClick: item.onClick,
     })),
@@ -47,11 +47,11 @@ function KanbanCard({
       title={title}
       extra={
         <Dropdown menu={menu} trigger={['click']}>
-          <EllipsisOutlined className="dropdown-icon" />
+          <EllipsisOutlined className="text-gray-500 text-xl hover:text-gray-900 cursor-pointer" />
         </Dropdown>
       }
-      style={{ borderColor: borderColors[label] || '#d9d9d9' }}
-      className="kanban-card"
+      style={{ borderColor: borderColors[priority] || '#d9d9d9' }}
+      className="mb-4 rounded-lg transition-shadow hover:shadow-lg"
       draggable
       onDragStart={(e) => {
         e.dataTransfer.setData('text/plain', id);
@@ -59,8 +59,8 @@ function KanbanCard({
       }}
       onDoubleClick={() => onDoubleClick && onDoubleClick(id)}
     >
-      <p className="kanban-card-due-date">{formatHumanDate(dueDate)}</p>
-      <p className="kanban-card-description">
+      <p className="text-xs text-gray-500 mb-2">{formatHumanDate(dueDate)}</p>
+      <p className="text-sm text-gray-800">
         {description
           ? truncateText(description, 50)
           : 'Descripción de la tarea...'}

@@ -1,25 +1,4 @@
-/* src/styles/Header.css */
-.header {
-  padding: 1rem;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  background-color: #001529;
-}
-
-.header-background {
-  background-color: #001529; /* Fondo oscuro para el header */
-}
-
-.nav {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.menu-button {
-  color: white;
-  margin-left: 16px;
-}
-
+/* Si necesitas estilos específicos para el drawer que no se cubren con TailwindCSS */
 .drawer-menu .ant-drawer-content {
   background-color: #ffffff; /* Fondo blanco para el drawer */
 }
@@ -46,8 +25,4 @@
 
 .drawer-menu .ant-menu-item::after {
   display: none; /* Quita la línea inferior predeterminada de Ant Design */
-}
-
-.avatar {
-  cursor: pointer;
 }
