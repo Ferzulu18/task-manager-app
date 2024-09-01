@@ -36,6 +36,38 @@ const ResetPasswordPage = () => {
                 required: true,
                 message: 'Por favor ingresa tu nueva contraseña',
               },
+              {
+                min: 8,
+                message: 'La contraseña debe tener al menos 8 caracteres',
+              },
+              {
+                pattern:
+                  /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
+                message:
+                  'La contraseña debe ser alfanumérica y contener al menos un carácter especial',
+              },
+            ]}
+          >
+            <Input.Password />
+          </Form.Item>
+          <Form.Item
+            name="confirm"
+            label="Confirmar contraseña"
+            dependencies={['password']}
+            hasFeedback
+            rules={[
+              {
+                required: true,
+                message: 'Por favor confirma tu nueva contraseña',
+              },
+              ({ getFieldValue }) => ({
+                validator(_, value) {
+                  if (!value || getFieldValue('password') === value) {
+                    return Promise.resolve();
+                  }
+                  return Promise.reject('Las contraseñas no coinciden');
+                },
+              }),
             ]}
           >
             <Input.Password />

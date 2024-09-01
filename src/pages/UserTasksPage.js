@@ -184,7 +184,7 @@ function UserTasksPage() {
         <Col span={8}>
           <Card
             title="Por hacer"
-            className="bg-gray-100 p-4 rounded-lg h-full"
+            className="bg-gray-200 p-4 rounded-lg h-full"
             onDragOver={(e) => e.preventDefault()}
             onDrop={() => handleDrop('todo')}
           >
@@ -212,7 +212,7 @@ function UserTasksPage() {
         <Col span={8}>
           <Card
             title="En Proceso"
-            className="bg-gray-100 p-4 rounded-lg h-full"
+            className="bg-gray-200 p-4 rounded-lg h-full"
             onDragOver={(e) => e.preventDefault()}
             onDrop={() => handleDrop('wip')}
           >
@@ -232,7 +232,7 @@ function UserTasksPage() {
         <Col span={8}>
           <Card
             title="Hecho"
-            className="bg-gray-100 p-4 rounded-lg h-full"
+            className="bg-gray-200 p-4 rounded-lg h-full"
             onDragOver={(e) => e.preventDefault()}
             onDrop={() => handleDrop('done')}
           >

@@ -3,7 +3,7 @@ import { Card, Col, Row } from 'antd';
 import {
   SmileOutlined,
   StarOutlined,
-  UsergroupAddOutlined,
+  // UsergroupAddOutlined,
 } from '@ant-design/icons';
 import CTAButton from '../components/CTAButton';
 import { AuthContext } from '../context/AuthContext';
@@ -28,7 +28,13 @@ function HomePage() {
               Ya estás registrado. Empieza a gestionar tus tareas y aprovecha
               todas las funcionalidades.
             </p>
-            <CTAButton to="/dashboard" text="Ir a mi panel de tareas" />
+            <div className="flex justify-center mt-6">
+              <CTAButton
+                to="/dashboard"
+                text="Ir a mi panel de tareas"
+                className="w-40 h-16 text-md"
+              />
+            </div>
           </>
         ) : authenticated && user && user.role === 'admin' ? (
           <>
@@ -37,7 +43,13 @@ function HomePage() {
               usuarios, supervisar tareas y configurar funcionalidades
               avanzadas.
             </p>
-            <CTAButton to="/supervise" text="Ir a mi panel administrativo" />
+            <div className="flex justify-center mt-6">
+              <CTAButton
+                to="/supervise"
+                text="Ir a mi panel administrativo"
+                className="w-40 h-16 text-md"
+              />
+            </div>
           </>
         ) : (
           <>
@@ -46,19 +58,27 @@ function HomePage() {
               sesión si ya tienes una cuenta, y empieza a gestionar tus tareas.
             </p>
             <div className="flex justify-center gap-4 mt-4">
-              <CTAButton to="/auth/register" text="Regístrate Ahora" />
-              <CTAButton to="/auth/login" text="Inicia Sesión" />
+              <CTAButton
+                to="/auth/register"
+                text="Regístrate Ahora"
+                className="w-40 h-16 text-md"
+              />
+              <CTAButton
+                to="/auth/login"
+                text="Inicia Sesión"
+                className="w-40 h-16 text-md"
+              />
             </div>
           </>
         )}
       </Card>
 
-      <div className="w-full max-w-5xl bg-white p-8 shadow-md mb-8">
+      <div className="w-full max-w-4xl bg-white p-8 shadow-md mb-8">
         <h2 className="text-2xl font-bold mb-6 text-center">
           Servicios Destacados
         </h2>
         <Row gutter={16}>
-          <Col span={8}>
+          <Col span={12}>
             <Card className="text-center p-6 border border-gray-300 rounded-lg">
               <SmileOutlined className="text-blue-500 text-3xl mb-4" />
               <h3 className="text-xl font-bold mb-2">Gestión Eficiente</h3>
@@ -68,7 +88,7 @@ function HomePage() {
               </p>
             </Card>
           </Col>
-          <Col span={8}>
+          <Col span={12}>
             <Card className="text-center p-6 border border-gray-300 rounded-lg">
               <StarOutlined className="text-blue-500 text-3xl mb-4" />
               <h3 className="text-xl font-bold mb-2">Usabilidad Amigable</h3>
@@ -78,7 +98,7 @@ function HomePage() {
               </p>
             </Card>
           </Col>
-          <Col span={8}>
+          {/* <Col span={8}>
             <Card className="text-center p-6 border border-gray-300 rounded-lg">
               <UsergroupAddOutlined className="text-blue-500 text-3xl mb-4" />
               <h3 className="text-xl font-bold mb-2">Colaboración</h3>
@@ -87,11 +107,11 @@ function HomePage() {
                 manera eficiente.
               </p>
             </Card>
-          </Col>
+          </Col> */}
         </Row>
       </div>
 
-      <div className="w-full max-w-5xl bg-white p-8 shadow-md">
+      <div className="w-full max-w-4xl bg-white p-8 shadow-md">
         <h2 className="text-2xl font-bold mb-6 text-center">Testimonios</h2>
         <div className="flex flex-col items-center">
           <div className="w-full max-w-3xl p-6 border border-gray-300 rounded-lg mb-4 bg-gray-50">

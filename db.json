@@ -99,6 +99,29 @@
       "dueDate": "2024-09-20T05:00:00.000Z",
       "priority": "medium",
       "userId": "439d"
+    },
+    {
+      "id": "0b34",
+      "title": "Tengo esta tarea por hacer",
+      "description": "No recuerdo",
+      "userId": "49aa",
+      "status": "todo",
+      "priority": "medium",
+      "dueDate": "2024-09-28T05:00:00.000Z"
+    },
+    {
+      "id": "4f60",
+      "title": "Una tarea para Esteban",
+      "description": "Tarea",
+      "dueDate": "2024-09-30T05:00:00.000Z",
+      "priority": "low",
+      "userId": "49aa"
+    },
+    {
+      "id": "e981",
+      "title": "Otra mas",
+      "userId": "49aa",
+      "status": "todo"
     }
   ],
   "users": [
@@ -113,7 +136,7 @@
       "id": "439d",
       "name": "Alexander",
       "email": "alex@example.com",
-      "password": "alex123$",
+      "password": "alex123*",
       "role": "user"
     },
     {
@@ -121,6 +144,13 @@
       "name": "Fernando",
       "email": "fernando@example.com",
       "password": "fernando123$",
+      "role": "user"
+    },
+    {
+      "id": "49aa",
+      "name": "Esteban Zuluaga",
+      "email": "esteban@service.com.co",
+      "password": "esteban123$",
       "role": "user"
     }
   ],

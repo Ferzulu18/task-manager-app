@@ -15,7 +15,7 @@ export const generateUniqueToken = () => {
 
 export const sendPasswordReset = async (token, email) => {
   try {
-    const resetURL = `http://localhost:3000/reset-password?token=${token}`;
+    const resetURL = `http://localhost:3000/auth/reset?token=${token}`;
     const response = await axios.post(
       MAILTRAP_API_URL,
       {

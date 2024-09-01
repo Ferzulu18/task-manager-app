@@ -136,13 +136,16 @@ function Header() {
               </Button>
             </>
           ) : (
-            <Dropdown menu={menu} placement="bottomRight" trigger={['click']}>
-              <Avatar
-                icon={<UserOutlined />}
-                src={`https://api.dicebear.com/9.x/avataaars/svg?seed=${user.name}`}
-                className="cursor-pointer"
-              />
-            </Dropdown>
+            <div className="flex items-center justify-end">
+              <p className="m-0 mr-4 text-white">{user.name}</p>
+              <Dropdown menu={menu} placement="bottomRight" trigger={['click']}>
+                <Avatar
+                  icon={<UserOutlined />}
+                  src={`https://api.dicebear.com/9.x/avataaars/svg?seed=${user.name}`}
+                  className="cursor-pointer"
+                />
+              </Dropdown>
+            </div>
           )}
         </div>
       </nav>

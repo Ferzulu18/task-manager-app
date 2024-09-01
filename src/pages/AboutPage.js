@@ -6,6 +6,8 @@ import {
   UserSwitchOutlined,
 } from '@ant-design/icons';
 import kanbanImage from '../assets/images/kanban.jpg';
+import boardImage from '../assets/images/board.jpg';
+import efficientImage from '../assets/images/efficient.jpg';
 
 const AboutPage = () => {
   return (
@@ -33,8 +35,9 @@ const AboutPage = () => {
             }
           >
             <p>
-              Permite a los usuarios crear, editar y gestionar sus tareas de
-              manera sencilla, asegurando que nada se pierda de vista.
+              Facilita a los usuarios la creación, edición y gestión de sus
+              tareas de manera sencilla y eficiente, asegurando que cada
+              actividad esté organizada y priorizada.
             </p>
           </Card>
         </Col>
@@ -71,13 +74,29 @@ const AboutPage = () => {
         </Col>
       </Row>
 
-      <div className="text-center mt-10">
-        <img
-          src={kanbanImage}
-          alt="Tablero de gestión de tareas"
-          className="max-w-full h-auto rounded-lg shadow-lg"
-        />
-      </div>
+      <Row gutter={[16, 16]} className="mb-10 justify-center">
+        <Col xs={24} sm={12} md={8}>
+          <img
+            src={kanbanImage}
+            alt="Tablero de gestión de tareas 1"
+            className="h-40 w-full rounded-lg shadow-lg"
+          />
+        </Col>
+        <Col xs={24} sm={12} md={8}>
+          <img
+            src={efficientImage}
+            alt="Tablero de gestión de tareas 2"
+            className="h-40 w-full rounded-lg shadow-lg"
+          />
+        </Col>
+        <Col xs={24} sm={12} md={8}>
+          <img
+            src={boardImage}
+            alt="Tablero de gestión de tareas 3"
+            className="h-40 w-full rounded-lg shadow-lg"
+          />
+        </Col>
+      </Row>
     </div>
   );
 };
