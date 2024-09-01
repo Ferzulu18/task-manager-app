@@ -22,8 +22,9 @@ import {
   updateTaskStatus,
   checkTaskLimit,
 } from '../../services/userTaskService';
+import dayjs from 'dayjs';
+import { disabledDate } from '../../utils/dateUtils';
 import '../../styles/users/UserTasksPage.css';
-import moment from 'moment';
 
 const { Option } = Select;
 
@@ -33,11 +34,11 @@ function UserTasksPage() {
   const location = useLocation();
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [task, setTask] = useState({
+    id: null,
     title: '',
     description: '',
     dueDate: null,
     label: '',
-    id: null,
   });
   const [draggedTask, setDraggedTask] = useState(null);
   const [tasks, setTasks] = useState({
@@ -45,6 +46,11 @@ function UserTasksPage() {
     wip: [],
     done: [],
   });
+  const labelColors = {
+    high: '#ff4d4f',
+    medium: '#faad14',
+    low: '#36cfc9',
+  };
 
   useEffect(() => {
     const fetchUserTasks = async () => {
@@ -141,8 +147,10 @@ function UserTasksPage() {
 
   const confirmDelete = (taskId) => {
     Modal.confirm({
-      title: 'Confirmar Eliminación',
+      title: 'Confirmar',
       content: '¿Estás seguro de que quieres eliminar esta tarea?',
+      okText: 'Eliminar',
+      cancelText: 'Cancelar',
       onOk: async () => {
         try {
           await deleteTask(taskId);
@@ -153,6 +161,11 @@ function UserTasksPage() {
         }
       },
     });
+  };
+
+  const handleDateChange = (date) => {
+    // Actualiza el estado con la fecha seleccionada o con null si no se selecciona ninguna fecha
+    setTask({ ...task, dueDate: date ? date.toISOString() : null });
   };
 
   return (
@@ -177,12 +190,12 @@ function UserTasksPage() {
             {tasks.todo.map((task) => (
               <KanbanCard
                 key={task.id}
-                title={task.title}
-                dueDate={task.dueDate}
-                label={task.label}
+                item={task}
                 onDragStart={() => handleDragStart(task)}
+                onDoubleClick={() => showModal(task)}
                 onEdit={() => showModal(task)}
                 onDelete={() => confirmDelete(task.id)}
+                borderColors={labelColors}
               />
             ))}
             <Button
@@ -205,12 +218,12 @@ function UserTasksPage() {
             {tasks.wip.map((task) => (
               <KanbanCard
                 key={task.id}
-                title={task.title}
-                dueDate={task.dueDate}
-                label={task.label}
+                item={task}
                 onDragStart={() => handleDragStart(task)}
+                onDoubleClick={() => showModal(task)}
                 onEdit={() => showModal(task)}
                 onDelete={() => confirmDelete(task.id)}
+                borderColors={labelColors}
               />
             ))}
           </Card>
@@ -225,12 +238,12 @@ function UserTasksPage() {
             {tasks.done.map((task) => (
               <KanbanCard
                 key={task.id}
-                title={task.title}
-                dueDate={task.dueDate}
-                label={task.label}
+                item={task}
                 onDragStart={() => handleDragStart(task)}
+                onDoubleClick={() => showModal(task)}
                 onEdit={() => showModal(task)}
                 onDelete={() => confirmDelete(task.id)}
+                borderColors={labelColors}
               />
             ))}
           </Card>
@@ -242,6 +255,8 @@ function UserTasksPage() {
         open={isModalVisible}
         onOk={handleOk}
         onCancel={handleCancel}
+        okText={task.id ? 'Modificar' : 'Crear'}
+        cancelText="Cancelar"
       >
         <Input
           placeholder="Título"
@@ -256,21 +271,20 @@ function UserTasksPage() {
         />
         <DatePicker
           format="YYYY-MM-DD"
-          value={task.dueDate ? moment(task.dueDate) : null}
-          onChange={(date) =>
-            setTask({ ...task, dueDate: date ? date.toISOString() : null })
-          }
+          value={task.dueDate ? dayjs(task.dueDate) : null}
+          onChange={handleDateChange}
+          disabledDate={disabledDate}
           className="mt-2"
         />
         <Select
           placeholder="Etiqueta"
           value={task.label}
           onChange={(value) => setTask({ ...task, label: value })}
-          className="mt-2"
+          className="mt-2 custom-select"
         >
-          <Option value="important">Importante</Option>
-          <Option value="medium">Medio</Option>
-          <Option value="low">Bajo</Option>
+          <Option value="high">Crítica</Option>
+          <Option value="medium">Moderada</Option>
+          <Option value="low">Menor</Option>
         </Select>
       </Modal>
     </div>

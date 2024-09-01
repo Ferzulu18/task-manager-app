@@ -1,45 +1,45 @@
 import React from 'react';
-import { Card, Dropdown, Menu } from 'antd';
+import { Card, Dropdown } from 'antd';
 import {
   EllipsisOutlined,
   EditOutlined,
   DeleteOutlined,
 } from '@ant-design/icons';
-import { formatDueDate } from '../utils/dateUtils';
+import { formatHumanDate } from '../utils/dateUtils';
+import { truncateText } from '../utils/textUtils';
+import '../styles/KanbanCard.css';
 
 function KanbanCard({
-  id,
-  title,
-  dueDate,
-  label,
+  item,
   onDragStart,
   onDoubleClick,
   onEdit,
   onDelete,
+  borderColors,
 }) {
-  const handleMenuClick = (e) => {
-    if (e.key === 'edit') {
-      onEdit();
-    } else if (e.key === 'delete') {
-      onDelete();
-    }
-  };
+  const { id, title, description, dueDate, label } = item;
 
-  const menu = (
-    <Menu onClick={handleMenuClick}>
-      <Menu.Item key="edit" icon={<EditOutlined />}>
-        Editar
-      </Menu.Item>
-      <Menu.Item key="delete" icon={<DeleteOutlined />}>
-        Eliminar
-      </Menu.Item>
-    </Menu>
-  );
+  const menuItems = [
+    {
+      key: 'edit',
+      icon: <EditOutlined />,
+      label: 'Editar',
+      onClick: () => onEdit(id),
+    },
+    {
+      key: 'delete',
+      icon: <DeleteOutlined />,
+      label: 'Eliminar',
+      onClick: () => onDelete(id),
+    },
+  ];
 
-  const labelColors = {
-    important: '#ff4d4f',
-    medium: '#faad14',
-    low: '#36cfc9',
+  const menu = {
+    items: menuItems.map((item) => ({
+      key: item.key,
+      label: item.label,
+      onClick: item.onClick,
+    })),
   };
 
   return (
@@ -50,17 +50,21 @@ function KanbanCard({
           <EllipsisOutlined className="dropdown-icon" />
         </Dropdown>
       }
-      style={{ borderColor: labelColors[label] || '#d9d9d9' }}
+      style={{ borderColor: borderColors[label] || '#d9d9d9' }}
       className="kanban-card"
       draggable
       onDragStart={(e) => {
         e.dataTransfer.setData('text/plain', id);
-        onDragStart();
+        onDragStart(id);
       }}
       onDoubleClick={() => onDoubleClick && onDoubleClick(id)}
     >
-      <p className="kanban-card-due-date">{formatDueDate(dueDate)}</p>
-      <p className="kanban-card-description">Descripción de la tarea...</p>
+      <p className="kanban-card-due-date">{formatHumanDate(dueDate)}</p>
+      <p className="kanban-card-description">
+        {description
+          ? truncateText(description, 50)
+          : 'Descripción de la tarea...'}
+      </p>
     </Card>
   );
 }

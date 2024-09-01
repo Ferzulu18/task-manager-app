@@ -3,7 +3,7 @@
     {
       "id": "48ac",
       "title": "Tarea de prueba 1",
-      "dueDate": "2024-08-31T05:00:00.000Z",
+      "dueDate": "2024-09-07T05:00:00.000Z",
       "label": "low",
       "userId": "eb20",
       "status": "todo"
@@ -14,7 +14,8 @@
       "dueDate": "2024-08-31T05:00:00.000Z",
       "label": "low",
       "userId": "eb20",
-      "status": "done"
+      "status": "done",
+      "description": "Esta es la descripción de esta tarea, para probar que actualice bien"
     },
     {
       "id": "d589",
@@ -25,34 +26,34 @@
       "status": "todo"
     },
     {
-      "id": "2ebe",
-      "title": "Hola",
-      "dueDate": "2024-08-31T05:00:00.000Z",
-      "label": "medium",
-      "userId": "eb20",
-      "status": "todo"
-    },
-    {
       "id": "ccfd",
       "title": "hola",
       "description": "hola",
-      "dueDate": "2024-08-23T05:00:00.000Z",
+      "dueDate": "2024-09-01T05:00:00.000Z",
       "label": "low",
       "userId": "eb20",
       "status": "todo"
     },
     {
       "id": "1b84",
-      "label": "important",
-      "dueDate": "2024-08-06T05:00:00.000Z",
+      "label": "high",
+      "dueDate": "2024-10-01T05:00:00.000Z",
       "title": "Hello",
       "userId": "eb20",
-      "status": "wip"
+      "status": "wip",
+      "description": "Esta es la descripción de esta tarea, para probar que actualice bien"
+    },
+    {
+      "id": "7fff",
+      "dueDate": "2025-01-04T05:00:00.000Z",
+      "title": "Tarea nueva!",
+      "userId": "eb20",
+      "status": "todo"
     }
   ],
   "users": [
     {
-      "id": "1",
+      "id": "0001",
       "name": "Administrador",
       "email": "admin@example.com",
       "password": "admin123",

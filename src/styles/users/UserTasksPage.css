@@ -35,3 +35,8 @@
 .kanban-card-description {
   color: #595959;
 }
+
+.custom-select {
+  width: 120px;
+  max-width: 100%;
+}
