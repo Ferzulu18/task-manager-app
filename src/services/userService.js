@@ -1,74 +1,73 @@
 import axios from 'axios';
+import { handleExcept } from '../utils/errorUtils';
 
-const API_URL = 'http://localhost:5000/tasks';
+const API_URL = 'http://localhost:5000';
 
 // Obtener todas las tareas de un usuario específico
 export const fetchTasks = async (userId) => {
   try {
-    const response = await axios.get(API_URL, {
+    const response = await axios.get(`${API_URL}/tasks`, {
       params: { userId },
     });
     return response.data;
   } catch (error) {
-    console.error('Error al obtener las tareas:', error);
-    throw error;
+    handleExcept('EXC001', error);
   }
 };
 
 // Crear una tarea
 export const createTask = async (task) => {
   try {
-    const response = await axios.post(API_URL, {
+    const response = await axios.post(`${API_URL}/tasks`, {
       ...task,
       status: 'todo',
     });
     return response.data;
   } catch (error) {
-    console.error('Error al crear la tarea:', error);
-    throw error;
+    handleExcept('EXC002', error);
   }
 };
 
 // Modificar una tarea
 export const updateTask = async (taskId, updates) => {
   try {
-    const response = await axios.patch(`${API_URL}/${taskId}`, updates);
+    const response = await axios.patch(`${API_URL}/tasks/${taskId}`, updates);
     return response.data;
   } catch (error) {
-    console.error('Error al modificar la tarea:', error);
-    throw error;
+    handleExcept('EXC003', error);
   }
 };
 
 // Modificar el estado de una tarea
 export const updateTaskStatus = async (taskId, status) => {
   try {
-    const response = await axios.patch(`${API_URL}/${taskId}`, { status });
+    const response = await axios.patch(`${API_URL}/tasks/${taskId}`, {
+      status,
+    });
     return response.data;
   } catch (error) {
-    console.error('Error al modificar el estado de la tarea:', error);
-    throw error;
+    handleExcept('EXC005', error);
   }
 };
 
 // Eliminar una tarea
 export const deleteTask = async (taskId) => {
   try {
-    await axios.delete(`${API_URL}/${taskId}`);
+    await axios.delete(`${API_URL}/tasks/${taskId}`);
   } catch (error) {
-    console.error('Error al eliminar la tarea:', error);
-    throw error;
+    handleExcept('EXC004', error);
   }
 };
 
-// Verificar el límite de tareas
+// Verificar el límite de tareas, máximo 50.
 export const checkTaskLimit = async (userId) => {
   try {
-    const response = await axios.get(API_URL, { params: { userId } });
+    const response = await axios.get(`${API_URL}/tasks`, {
+      params: { userId },
+    });
     const tasks = response.data;
     return tasks.length >= 50;
   } catch (error) {
-    console.error('Error al verificar el límite de tareas:', error);
-    throw error;
+    handleExcept('EXC006', error);
   }
 };

@@ -1,9 +1,10 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Form, Input, Button, message, Modal } from 'antd';
+import { Form, Input, Button, Modal } from 'antd';
 import FormButton from '../../components/FormButton';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { loginUser, sendResetPassword } from '../../services/authService';
 import { AuthContext } from '../../context/AuthContext';
+import { handleError, handleSuccess } from '../../utils/errorUtils';
 
 function LoginPage() {
   const [form] = Form.useForm();
@@ -25,28 +26,24 @@ function LoginPage() {
 
       if (user) {
         login(user);
-        message.success('Inicio de sesión exitoso');
+        handleSuccess('INF003');
         const from = location.state?.from?.pathname || '/';
         navigate(from);
       } else {
-        message.error('Credenciales inválidas');
+        handleError('ERR003');
       }
     } catch (error) {
-      message.error('Error al iniciar sesión');
-      console.error(error);
+      handleError('ERR004');
     }
   };
 
   const handleForgotPassword = async (values) => {
     try {
       await sendResetPassword(values.email);
-      message.success(
-        'Correo de recuperación enviado, revisa tu bandeja de entrada'
-      );
+      handleSuccess('INF004');
       setIsModalVisible(false);
     } catch (error) {
-      message.error('Error al enviar el correo de recuperación');
-      console.error(error);
+      handleError('ERR005');
     }
   };
 

@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { Form, Input, message } from 'antd';
+import { Form, Input } from 'antd';
 import { MailOutlined, PhoneOutlined, HomeOutlined } from '@ant-design/icons';
 import FormButton from '../components/FormButton';
 import { sendContactEmail } from '../utils/mailtrapUtils';
+import { handleError, handleSuccess } from '../utils/errorUtils';
 
 const ContactPage = () => {
   const [loading, setLoading] = useState(false);
@@ -11,13 +12,9 @@ const ContactPage = () => {
     setLoading(true);
     try {
       await sendContactEmail(values);
-      message.success(
-        'Tu mensaje ha sido enviado con éxito. ¡Gracias por contactarnos!'
-      );
+      handleSuccess('INF001');
     } catch (error) {
-      message.error(
-        'Hubo un error al enviar tu mensaje. Por favor, intenta de nuevo más tarde.'
-      );
+      handleError('ERR001');
     } finally {
       setLoading(false);
     }

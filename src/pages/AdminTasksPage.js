@@ -7,7 +7,6 @@ import {
   Input,
   DatePicker,
   Select,
-  message,
   Table,
   Tag,
 } from 'antd';
@@ -24,6 +23,7 @@ import {
 } from '../services/adminService';
 import dayjs from 'dayjs';
 import { disabledDate } from '../utils/dateUtils';
+import { handleError, handleSuccess } from '../utils/errorUtils';
 import './AdminTasksPage.css';
 
 const { Option } = Select;
@@ -59,9 +59,8 @@ function AdminTasksPage() {
       try {
         const tasks = await fetchAndProcessTasks(filters, sorter, pagination);
         setTasksData(tasks);
-        console.log('tasks', tasks);
       } catch (error) {
-        message.error('No se pudieron obtener las tareas');
+        handleError('ERR007');
       }
     };
 
@@ -70,7 +69,7 @@ function AdminTasksPage() {
         const users = await fetchUsers();
         setUsers(users);
       } catch (error) {
-        message.error('No se pudieron obtener los usuarios');
+        handleError('ERR008');
       }
     };
 
@@ -88,7 +87,7 @@ function AdminTasksPage() {
       const tasks = await fetchAndProcessTasks(filters, sorter, pagination);
       setTasksData(tasks);
     } catch (error) {
-      message.error('No se pudieron refrescar las tareas');
+      handleError('ERR009');
     }
   };
 
@@ -111,17 +110,17 @@ function AdminTasksPage() {
 
   const handleOk = async () => {
     if (!task.title) {
-      message.error('El título es obligatorio');
+      handleError('ERR010');
       return;
     }
 
     try {
       if (task.id) {
         await updateTask(task.id, task);
-        message.success('Tarea modificada con éxito');
+        handleSuccess('INF006');
       } else {
         await createTask(task);
-        message.success('Tarea creada con éxito');
+        handleSuccess('INF007');
       }
       setIsModalVisible(false);
       setTask({
@@ -134,7 +133,7 @@ function AdminTasksPage() {
       });
       refreshTasks();
     } catch (error) {
-      message.error('No se pudo crear o modificar la tarea');
+      handleError('ERR011');
     }
   };
 
@@ -147,10 +146,10 @@ function AdminTasksPage() {
       onOk: async () => {
         try {
           await deleteTask(taskId);
-          message.success('Tarea eliminada con éxito');
+          handleSuccess('INF008');
           refreshTasks();
         } catch (error) {
-          message.error('No se pudo eliminar la tarea');
+          handleError('ERR012');
         }
       },
     });
@@ -171,6 +170,7 @@ function AdminTasksPage() {
   const handleSortChange = (pagination, filters, sorter) => {
     setSorter({ field: sorter.field, order: sorter.order });
     setPagination(pagination);
+    refreshTasks();
   };
 
   const columns = [
@@ -263,7 +263,6 @@ function AdminTasksPage() {
         </Col>
         <Col>
           <DatePicker.RangePicker
-            disabledDate={disabledDate}
             onChange={handleDateRangeChange}
             placeholder={['Fecha Inicio', 'Fecha Fin']}
           />

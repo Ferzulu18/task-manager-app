@@ -1,9 +1,30 @@
 import axios from 'axios';
-import dayjs from 'dayjs';
+import { isWithinRange } from '../utils/dateUtils';
+import { handleExcept } from '../utils/errorUtils';
 
 const API_URL = 'http://localhost:5000';
 
 export const pageSizeDefault = 10;
+
+// Función para traer todos los usuarios (para la búsqueda en el formulario)
+export const fetchUsers = async () => {
+  try {
+    const response = await axios.get(`${API_URL}/users`);
+    return response.data;
+  } catch (error) {
+    handleExcept('EXC007', error);
+  }
+};
+
+// Función para consultar todos los usuarios
+export const fetchUsersByIds = async (userIds = []) => {
+  try {
+    const usersResponse = await axios.get(`${API_URL}/users`);
+    return usersResponse.data.filter((user) => userIds.includes(user.id));
+  } catch (error) {
+    handleExcept('EXC007', error);
+  }
+};
 
 // Función para consultar y procesar tareas
 export const fetchAndProcessTasks = async (
@@ -16,87 +37,106 @@ export const fetchAndProcessTasks = async (
     const tasksResponse = await axios.get(`${API_URL}/tasks`);
     let tasks = tasksResponse.data;
 
-    // 2. Filtrar por usuario, título y rango de fechas
-    if (filters.user) {
-      tasks = tasks.filter(
-        (task) =>
-          task.userEmail.includes(filters.user) ||
-          task.userName.includes(filters.user)
-      );
-    }
-    if (filters.title) {
-      tasks = tasks.filter((task) => task.title.includes(filters.title));
-    }
-    if (filters.dateRange && filters.dateRange.length === 2) {
-      const [start, end] = filters.dateRange;
-      tasks = tasks.filter((task) => dayjs(task.dueDate).isBetween(start, end));
-    }
-
-    // 3. Ordenar las tareas
-    if (sorter.field && sorter.order) {
-      tasks = tasks.sort((a, b) => {
-        if (sorter.order === 'ascend') {
-          return a[sorter.field] > b[sorter.field] ? 1 : -1;
-        } else {
-          return a[sorter.field] < b[sorter.field] ? 1 : -1;
-        }
-      });
-    }
-
-    // 4. Paginación
-    const { current = 1, pageSize = pageSizeDefault } = pagination;
-    const startIndex = (current - 1) * pageSize;
-    const endIndex = current * pageSize;
-    const paginatedTasks = tasks.slice(startIndex, endIndex);
-
-    // 5. Traer todos los usuarios y asociarlos a las tareas
-    const userIds = paginatedTasks.map((task) => task.userId);
+    // 2. Traer todos los usuarios y asociarlos a las tareas
+    const userIds = tasks.map((task) => task.userId);
     const usersResponse = await fetchUsersByIds(userIds);
     const users = usersResponse.reduce((acc, user) => {
       acc[user.id] = user;
       return acc;
     }, {});
 
-    const tasksWithUsers = paginatedTasks.map((task) => ({
+    const tasksWithUsers = tasks.map((task) => ({
       ...task,
       userEmail: users[task.userId]?.email,
       userName: users[task.userId]?.name,
       userRole: users[task.userId]?.role,
     }));
 
-    return tasksWithUsers;
-  } catch (error) {
-    throw new Error('Error fetching and processing tasks');
-  }
-};
+    let processedTasks = tasksWithUsers;
 
-// Función para consultar todos los usuarios
-export const fetchUsersByIds = async (userIds = []) => {
-  try {
-    const usersResponse = await axios.get(`${API_URL}/users`);
-    return usersResponse.data.filter((user) => userIds.includes(user.id));
+    // 3. Filtrar por usuario, título y rango de fechas
+    if (filters.user) {
+      let filteredTasks = [];
+      const userFilter = filters.user.toLowerCase().trim();
+      processedTasks.forEach((task) => {
+        const userEmail = (task?.userEmail || '').toLowerCase().trim();
+        const userName = (task?.userName || '').toLowerCase().trim();
+        if (userEmail.includes(userFilter) || userName.includes(userFilter)) {
+          filteredTasks.push(task);
+        }
+      });
+      processedTasks = filteredTasks;
+    }
+    if (filters.title) {
+      let filteredTasks = [];
+      const titleFilter = filters.title.toLowerCase().trim();
+      processedTasks.forEach((task) => {
+        const title = (task?.title || '').toLowerCase().trim();
+        if (title.includes(titleFilter)) {
+          filteredTasks.push(task);
+        }
+      });
+      processedTasks = filteredTasks;
+    }
+    if (filters.dateRange && filters.dateRange.length === 2) {
+      const [start, end] = filters.dateRange;
+      processedTasks = processedTasks.filter((task) => {
+        if (!task || !task.dueDate) return false;
+        return isWithinRange(task.dueDate, start, end);
+      });
+    }
+
+    // 4. Ordenar las tareas
+    if (sorter.field && sorter.order) {
+      processedTasks = processedTasks.sort((a, b) => {
+        const valueA = (a[sorter.field] || '').toLowerCase().trim();
+        const valueB = (b[sorter.field] || '').toLowerCase().trim();
+        if (sorter.order === 'ascend') {
+          return valueA > valueB ? 1 : -1;
+        } else {
+          return valueA < valueB ? 1 : -1;
+        }
+      });
+    }
+
+    // 5. Paginación
+    pagination.total = processedTasks.length;
+    const { current = 1, pageSize = pageSizeDefault } = pagination;
+    const startIndex = (current - 1) * pageSize;
+    const endIndex = current * pageSize;
+    const paginatedTasks = processedTasks.slice(startIndex, endIndex);
+
+    return paginatedTasks;
   } catch (error) {
-    throw new Error('Error fetching users');
+    handleExcept('EXC001', error);
   }
 };
 
 // Función para crear una tarea
 export const createTask = async (task) => {
   try {
-    const response = await axios.post(`${API_URL}/tasks`, task);
+    const { userEmail, userName, userRole, ...userWithoutSensitiveInfo } = task;
+    const response = await axios.post(
+      `${API_URL}/tasks`,
+      userWithoutSensitiveInfo
+    );
     return response.data;
   } catch (error) {
-    throw new Error('Error creating task');
+    handleExcept('EXC002', error);
   }
 };
 
 // Función para actualizar una tarea
 export const updateTask = async (taskId, task) => {
   try {
-    const response = await axios.put(`${API_URL}/tasks/${taskId}`, task);
+    const { userEmail, userName, userRole, ...userWithoutSensitiveInfo } = task;
+    const response = await axios.put(
+      `${API_URL}/tasks/${taskId}`,
+      userWithoutSensitiveInfo
+    );
     return response.data;
   } catch (error) {
-    throw new Error('Error updating task');
+    handleExcept('EXC003', error);
   }
 };
 
@@ -105,16 +145,6 @@ export const deleteTask = async (taskId) => {
   try {
     await axios.delete(`${API_URL}/tasks/${taskId}`);
   } catch (error) {
-    throw new Error('Error deleting task');
-  }
-};
-
-// Función para traer todos los usuarios (para la búsqueda en el formulario)
-export const fetchUsers = async () => {
-  try {
-    const response = await axios.get(`${API_URL}/users`);
-    return response.data;
-  } catch (error) {
-    throw new Error('Error fetching users');
+    handleExcept('EXC004', error);
   }
 };

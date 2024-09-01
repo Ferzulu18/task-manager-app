@@ -6,10 +6,7 @@
       "dueDate": "2024-09-08T05:00:00.000Z",
       "priority": "low",
       "userId": "eb20",
-      "status": "todo",
-      "userEmail": "fernando@example.com",
-      "userName": "Fernando",
-      "userRole": "user"
+      "status": "todo"
     },
     {
       "id": "7335",
@@ -90,11 +87,8 @@
     {
       "id": "e611",
       "title": "Tarea 6",
-      "userId": "439d",
+      "userId": "0001",
       "status": "todo",
-      "userEmail": "alex@example.com",
-      "userName": "Alexander",
-      "userRole": "user",
       "description": "Criterios de aceptación",
       "priority": "high",
       "dueDate": "2024-09-05T05:00:00.000Z"

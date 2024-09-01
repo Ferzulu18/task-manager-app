@@ -9,11 +9,9 @@ import CTAButton from '../components/CTAButton';
 import { AuthContext } from '../context/AuthContext';
 
 function HomePage() {
-  const { authenticated } = useContext(AuthContext);
+  const { authenticated, user } = useContext(AuthContext);
 
-  useEffect(() => {
-    // console.log('home', 'authenticated', authenticated);
-  }, [authenticated]);
+  useEffect(() => {}, [authenticated]);
 
   return (
     <div className="flex flex-col items-center p-8 bg-gray-100">
@@ -24,13 +22,22 @@ function HomePage() {
         <p className="text-lg mb-4">
           Esta es tu aplicación sencilla para gestionar tareas diarias.
         </p>
-        {authenticated ? (
+        {authenticated && user && user.role === 'user' ? (
           <>
             <p className="mb-6">
               Ya estás registrado. Empieza a gestionar tus tareas y aprovecha
               todas las funcionalidades.
             </p>
             <CTAButton to="/dashboard" text="Ir a mi panel de tareas" />
+          </>
+        ) : authenticated && user && user.role === 'admin' ? (
+          <>
+            <p className="mb-6">
+              Eres administrador. Accede al panel administrativo para gestionar
+              usuarios, supervisar tareas y configurar funcionalidades
+              avanzadas.
+            </p>
+            <CTAButton to="/supervise" text="Ir a mi panel administrativo" />
           </>
         ) : (
           <>

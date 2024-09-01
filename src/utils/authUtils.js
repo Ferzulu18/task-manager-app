@@ -1,27 +1,27 @@
-// Function to get authentication status
+// Obtiene el status de autenticación (localStorage)
 export const isAuthenticated = () => {
   return localStorage.getItem('isAuthenticated') === 'true';
 };
 
-// Function to set authentication status
+// Guarda el status de autenticación (localStorage)
 export const setAuthentication = (status) => {
   localStorage.setItem('isAuthenticated', status ? 'true' : 'false');
 };
 
-// Function to retrieve user information
+// Obtiene la información del usuario (localStorage)
 export const getUser = () => {
   const user = localStorage.getItem('user');
   return user ? JSON.parse(user) : null;
 };
 
-// Function to create user information (logout)
+// Creación datos de autentición (localStorage)
 export const storeLogin = (user) => {
   const { password, confirm, ...userWithoutSensitiveInfo } = user;
   localStorage.setItem('user', JSON.stringify(userWithoutSensitiveInfo));
   localStorage.setItem('isAuthenticated', 'true');
 };
 
-// Function to clear user information (logout)
+// Eliminación datos de autentición (localStorage)
 export const clearLogin = () => {
   localStorage.removeItem('user');
   localStorage.removeItem('isAuthenticated');

@@ -12,8 +12,6 @@ export const AuthProvider = ({ children }) => {
   const [authenticated, setAuthenticated] = useState(isAuthenticated());
   const [user, setUser] = useState(getUser());
 
-  // console.log('init', 'authenticated', authenticated, 'user', user);
-
   useEffect(() => {
     setAuthenticated(isAuthenticated());
     setUser(getUser());
@@ -23,14 +21,12 @@ export const AuthProvider = ({ children }) => {
     storeLogin(userData);
     setAuthenticated(true);
     setUser(userData);
-    // console.log('login', 'authenticated', authenticated, 'user', user);
   };
 
   const logout = () => {
     clearLogin();
     setAuthenticated(false);
     setUser(null);
-    // console.log('logout', 'authenticated', authenticated, 'user', user);
   };
 
   return (

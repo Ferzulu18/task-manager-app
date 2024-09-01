@@ -1,15 +1,5 @@
 import React, { useContext, useState, useEffect } from 'react';
-import {
-  Button,
-  Card,
-  Col,
-  Row,
-  Modal,
-  Input,
-  DatePicker,
-  Select,
-  message,
-} from 'antd';
+import { Button, Card, Col, Row, Modal, Input, DatePicker, Select } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import KanbanCard from '../components/KanbanCard';
 import { AuthContext } from '../context/AuthContext';
@@ -24,6 +14,7 @@ import {
 } from '../services/userService';
 import dayjs from 'dayjs';
 import { disabledDate } from '../utils/dateUtils';
+import { handleError, handleSuccess } from '../utils/errorUtils';
 
 const { Option } = Select;
 
@@ -37,7 +28,7 @@ function UserTasksPage() {
     title: '',
     description: '',
     dueDate: null,
-    priority: '', // Cambio de label a priority
+    priority: '',
   });
   const [draggedTask, setDraggedTask] = useState(null);
   const [tasks, setTasks] = useState({
@@ -61,7 +52,7 @@ function UserTasksPage() {
           done: userTasks.filter((task) => task.status === 'done'),
         });
       } catch (error) {
-        message.error('No se pudieron obtener las tareas');
+        handleError('ERR007');
       }
     };
 
@@ -82,7 +73,7 @@ function UserTasksPage() {
         done: userTasks.filter((task) => task.status === 'done'),
       });
     } catch (error) {
-      message.error('No se pudieron obtener las tareas');
+      handleError('ERR007');
     }
   };
 
@@ -104,28 +95,28 @@ function UserTasksPage() {
 
   const handleOk = async () => {
     if (!task.title) {
-      message.error('El título es obligatorio');
+      handleError('ERR010');
       return;
     }
 
     if (task.id) {
       try {
         await updateTask(task.id, { ...task, userId: user.id });
-        message.success('Tarea modificada con éxito');
+        handleSuccess('INF006');
       } catch (error) {
-        message.error('No se pudo modificar la tarea');
+        handleError('ERR011');
       }
     } else {
       try {
         const limitReached = await checkTaskLimit(user.id);
         if (limitReached) {
-          message.error('Has alcanzado el límite máximo de tareas');
+          handleError('ERR013');
           return;
         }
         await createTask({ ...task, userId: user.id, status: 'todo' });
-        message.success('Tarea creada con éxito');
+        handleSuccess('INF007');
       } catch (error) {
-        message.error('No se pudo crear la tarea');
+        handleError('ERR011');
       }
     }
     setIsModalVisible(false);
@@ -136,7 +127,7 @@ function UserTasksPage() {
       priority: '',
       id: null,
     });
-    refreshUserTasks(); // Refrescar tareas
+    refreshUserTasks();
   };
 
   const handleDragStart = (task) => {
@@ -147,11 +138,11 @@ function UserTasksPage() {
     if (draggedTask) {
       try {
         await updateTaskStatus(draggedTask.id, status);
-        message.success('Estado de la tarea actualizado con éxito');
+        handleSuccess('INF009');
         setDraggedTask(null);
-        refreshUserTasks(); // Refrescar tareas
+        refreshUserTasks();
       } catch (error) {
-        message.error('No se pudo actualizar el estado de la tarea');
+        handleError('ERR014');
       }
     }
   };
@@ -165,10 +156,10 @@ function UserTasksPage() {
       onOk: async () => {
         try {
           await deleteTask(taskId);
-          message.success('Tarea eliminada con éxito');
-          refreshUserTasks(); // Refrescar tareas
+          handleSuccess('INF008');
+          refreshUserTasks();
         } catch (error) {
-          message.error('No se pudo eliminar la tarea');
+          handleError('ERR012');
         }
       },
     });
@@ -205,7 +196,7 @@ function UserTasksPage() {
                 onDoubleClick={() => showModal(task)}
                 onEdit={() => showModal(task)}
                 onDelete={() => confirmDelete(task.id)}
-                borderColors={priorityColors} // Cambiado labelColors por priorityColors
+                borderColors={priorityColors}
               />
             ))}
             <Button
@@ -233,7 +224,7 @@ function UserTasksPage() {
                 onDoubleClick={() => showModal(task)}
                 onEdit={() => showModal(task)}
                 onDelete={() => confirmDelete(task.id)}
-                borderColors={priorityColors} // Cambiado labelColors por priorityColors
+                borderColors={priorityColors}
               />
             ))}
           </Card>
@@ -253,7 +244,7 @@ function UserTasksPage() {
                 onDoubleClick={() => showModal(task)}
                 onEdit={() => showModal(task)}
                 onDelete={() => confirmDelete(task.id)}
-                borderColors={priorityColors} // Cambiado labelColors por priorityColors
+                borderColors={priorityColors}
               />
             ))}
           </Card>
@@ -289,7 +280,7 @@ function UserTasksPage() {
           placeholder="Fecha de vencimiento"
         />
         <Select
-          placeholder="Prioridad" // Cambiado de Etiqueta a Prioridad
+          placeholder="Prioridad"
           value={task.priority}
           onChange={(value) => setTask({ ...task, priority: value })}
           className="mt-2 w-full"

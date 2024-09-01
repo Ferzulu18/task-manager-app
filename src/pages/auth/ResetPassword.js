@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Form, Input, Button, message } from 'antd';
+import { Form, Input, Button } from 'antd';
 import { resetPassword } from '../../services/authService';
+import { handleError, handleSuccess } from '../../utils/errorUtils';
 
 const ResetPasswordPage = () => {
   const navigate = useNavigate();
@@ -13,11 +14,10 @@ const ResetPasswordPage = () => {
   const handleResetPassword = async (values) => {
     try {
       await resetPassword(token, values.password);
-      message.success('Contraseña restablecida exitosamente');
+      handleSuccess('INF005');
       navigate('/auth/login');
     } catch (error) {
-      message.error('Error al restablecer la contraseña');
-      console.error(error);
+      handleError('ERR006');
     }
   };
 

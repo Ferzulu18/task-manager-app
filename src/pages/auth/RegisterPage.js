@@ -1,8 +1,9 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { message, Form, Input, Button } from 'antd';
+import { Form, Input, Button } from 'antd';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { registerUser } from '../../services/authService';
 import { AuthContext } from '../../context/AuthContext';
+import { handleError, handleSuccess } from '../../utils/errorUtils';
 
 function RegisterPage() {
   const navigate = useNavigate();
@@ -23,13 +24,13 @@ function RegisterPage() {
       const response = await registerUser(values);
 
       if (response.status === 201) {
-        message.success('Registro exitoso');
+        handleSuccess('INF002');
         navigate('/auth/login');
       } else {
-        message.error('Error en el registro');
+        handleError('ERR002');
       }
     } catch (error) {
-      message.error('Error en el registro');
+      handleError('ERR002');
     } finally {
       setLoading(false);
     }

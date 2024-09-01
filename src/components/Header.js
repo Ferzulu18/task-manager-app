@@ -19,9 +19,7 @@ function Header() {
   const navigate = useNavigate();
   const { authenticated, user, logout } = useContext(AuthContext);
 
-  useEffect(() => {
-    // console.log('header', 'authenticated', authenticated, 'user', user);
-  }, [authenticated, user]);
+  useEffect(() => {}, [authenticated, user]);
 
   const handleLogout = () => {
     logout();
@@ -57,11 +55,20 @@ function Header() {
       label: <NavLink to="/">Inicio</NavLink>,
       icon: <HomeOutlined />,
     },
-    authenticated && {
-      key: 'dashboard',
-      label: <NavLink to="/dashboard">Mis Tareas</NavLink>,
-      icon: <CheckSquareOutlined />,
-    },
+    authenticated &&
+      user &&
+      user.role === 'user' && {
+        key: 'dashboard',
+        label: <NavLink to="/dashboard">Mis Tareas</NavLink>,
+        icon: <CheckSquareOutlined />,
+      },
+    authenticated &&
+      user &&
+      user.role === 'admin' && {
+        key: 'dashboard',
+        label: <NavLink to="/supervise">Supervisión</NavLink>,
+        icon: <CheckSquareOutlined />,
+      },
     {
       key: 'about',
       label: <NavLink to="/about">Qué Hacemos</NavLink>,
