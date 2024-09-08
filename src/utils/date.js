@@ -1,9 +1,9 @@
 import dayjs from 'dayjs';
-import customParseFormat from 'dayjs/plugin/customParseFormat';
-import relativeTime from 'dayjs/plugin/relativeTime';
-import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
-import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
-import 'dayjs/locale/es';
+import customParseFormat from 'dayjs/plugin/customParseFormat.js';
+import relativeTime from 'dayjs/plugin/relativeTime.js';
+import isSameOrAfter from 'dayjs/plugin/isSameOrAfter.js';
+import isSameOrBefore from 'dayjs/plugin/isSameOrBefore.js';
+import 'dayjs/locale/es.js';
 
 dayjs.locale('es');
 dayjs.extend(customParseFormat);

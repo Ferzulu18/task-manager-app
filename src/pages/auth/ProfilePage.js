@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { Card, Avatar, Typography, Divider, Row, Col, Tag } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
-import { AuthContext } from '../../context/AuthContext';
+import { AuthContext } from '../../context/AuthContext.js';
 
 const { Title, Text } = Typography;
 

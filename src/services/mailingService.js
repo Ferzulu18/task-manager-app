@@ -1,33 +1,30 @@
 import axios from 'axios';
-import { v4 as uuidv4 } from 'uuid';
-import { handleExcept } from '../utils/errorUtils';
-import { getResetContent, getContactContent } from './mailtrapHtml';
+import { handleExcept } from '../utils/error.js';
+import { getResetContent, getContactContent } from '../utils/templates.js';
 
-const MAILTRAP_API_TOKEN = '12ea43caa140dbcc8d339d1aefc48a13';
-const MAILTRAP_API_URL = '/api/send/2069213';
-const MAILTRAP_SENDER_NAME = 'Task Manager Admin';
-const MAILTRAP_SENDER_EMAIL = 'admin@example.com';
+const mailApiUrl = 'https://sandbox.api.mailtrap.io/api/send/2243846';
+const mailSenderName = 'Task Manager Admin';
+const mailSenderEmail = 'admin@example.com';
 
-// Función para generar un token UUID 4
-export const generateUniqueToken = () => {
-  return uuidv4();
-};
+export const sendResetPassword = async (resetData) => {
+  const { url, email, token } = resetData;
 
-export const sendPasswordReset = async (token, email) => {
   try {
-    const resetURL = `http://localhost:3000/auth/reset?token=${token}`;
     const response = await axios.post(
-      MAILTRAP_API_URL,
+      mailApiUrl,
       {
-        from: { email: MAILTRAP_SENDER_EMAIL, name: MAILTRAP_SENDER_NAME },
+        from: {
+          email: mailSenderEmail,
+          name: mailSenderName,
+        },
         to: [{ email: email }],
         subject: 'Recuperación de Contraseña',
-        html: getResetContent(resetURL),
+        html: getResetContent(url),
         category: 'password_reset',
       },
       {
         headers: {
-          Authorization: `Bearer ${MAILTRAP_API_TOKEN}`,
+          Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json',
         },
       }
@@ -48,19 +45,24 @@ export const sendPasswordReset = async (token, email) => {
 };
 
 export const sendContactEmail = async (contactData) => {
+  const { name, email, subject, message, token } = contactData;
+
   try {
     const response = await axios.post(
-      MAILTRAP_API_URL,
+      mailApiUrl,
       {
-        from: { email: MAILTRAP_SENDER_EMAIL, name: MAILTRAP_SENDER_NAME },
-        to: [{ email: 'admin@example.com' }],
+        from: {
+          email: mailSenderEmail,
+          name: mailSenderName,
+        },
+        to: [{ email: mailSenderEmail }],
         subject: 'Nuevo Mensaje de Contacto',
-        html: getContactContent(contactData),
+        html: getContactContent(name, email, subject, message),
         category: 'contact_us',
       },
       {
         headers: {
-          Authorization: `Bearer ${MAILTRAP_API_TOKEN}`,
+          Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json',
         },
       }

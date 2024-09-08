@@ -1,8 +1,8 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { Button, Card, Col, Row, Modal, Input, DatePicker, Select } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
-import KanbanCard from '../components/KanbanCard';
-import { AuthContext } from '../context/AuthContext';
+import KanbanCard from '../components/KanbanCard.js';
+import { AuthContext } from '../context/AuthContext.js';
 import { useNavigate, useLocation } from 'react-router-dom';
 import {
   fetchTasks,
@@ -11,10 +11,10 @@ import {
   deleteTask,
   updateTaskStatus,
   checkTaskLimit,
-} from '../services/userService';
+} from '../services/userService.js';
 import dayjs from 'dayjs';
-import { disabledDate } from '../utils/dateUtils';
-import { handleError, handleSuccess } from '../utils/errorUtils';
+import { disabledDate } from '../utils/date.js';
+import { handleError, handleSuccess } from '../utils/error.js';
 
 const { Option } = Select;
 

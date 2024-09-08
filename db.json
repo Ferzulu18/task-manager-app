@@ -44,20 +44,13 @@
       "description": "Esta es la descripción de esta tarea, para probar que actualice bien"
     },
     {
-      "id": "7fff",
-      "dueDate": "2025-01-04T05:00:00.000Z",
-      "title": "Tarea nueva!",
-      "userId": "eb20",
-      "status": "todo"
-    },
-    {
       "id": "650e",
       "title": "Tarea 1",
       "description": "Tarea 1",
       "dueDate": "2024-09-02T05:00:00.000Z",
       "priority": "medium",
       "userId": "439d",
-      "status": "todo"
+      "status": "done"
     },
     {
       "id": "2aa6",
@@ -65,7 +58,8 @@
       "dueDate": "2024-09-19T05:00:00.000Z",
       "priority": "low",
       "userId": "439d",
-      "status": "wip"
+      "status": "wip",
+      "description": "Hola"
     },
     {
       "id": "40c9",
@@ -74,15 +68,16 @@
       "dueDate": "2024-09-01T05:00:00.000Z",
       "priority": "high",
       "userId": "439d",
-      "status": "done"
+      "status": "todo"
     },
     {
       "id": "bdca",
       "title": "Tarea 4",
       "dueDate": "2024-08-18T05:00:00.000Z",
       "priority": "high",
-      "userId": "439d",
-      "status": "todo"
+      "userId": "eb20",
+      "status": "todo",
+      "description": "Tarea 4"
     },
     {
       "id": "e611",
@@ -92,13 +87,6 @@
       "description": "Criterios de aceptación",
       "priority": "high",
       "dueDate": "2024-09-05T05:00:00.000Z"
-    },
-    {
-      "id": "934e",
-      "title": "Tarea para alexander",
-      "dueDate": "2024-09-20T05:00:00.000Z",
-      "priority": "medium",
-      "userId": "439d"
     },
     {
       "id": "0b34",
@@ -121,7 +109,64 @@
       "id": "e981",
       "title": "Otra mas",
       "userId": "49aa",
-      "status": "todo"
+      "status": "todo",
+      "description": "Otra mas de tantas que hay",
+      "priority": "low"
+    },
+    {
+      "title": "Tarea 4",
+      "description": "Tarea 4",
+      "userId": "439d",
+      "status": "todo",
+      "id": "Qe0Cj5X",
+      "priority": "high"
+    },
+    {
+      "title": "Tarea 5",
+      "dueDate": "2024-09-30T05:00:00.000Z",
+      "priority": "medium",
+      "userId": "439d",
+      "status": "wip",
+      "id": "Be9eqlh"
+    },
+    {
+      "title": "Tarea 6",
+      "dueDate": "2024-09-07T05:00:00.000Z",
+      "userId": "439d",
+      "status": "todo",
+      "id": "AnM4WLF"
+    },
+    {
+      "title": "Tare 1",
+      "description": "Tare 1",
+      "userId": "iLOUvwV",
+      "status": "wip",
+      "id": "p7vJOur",
+      "priority": "high",
+      "dueDate": "2024-09-18T05:00:00.000Z"
+    },
+    {
+      "title": "Tare 2",
+      "dueDate": "2024-09-07T05:00:00.000Z",
+      "userId": "iLOUvwV",
+      "status": "todo",
+      "id": "Pc_o7ok"
+    },
+    {
+      "title": "Tarea para Julian Molina",
+      "description": "Tarea para Julian Molina",
+      "dueDate": "2024-09-30T05:00:00.000Z",
+      "priority": "low",
+      "userId": "iLOUvwV",
+      "id": "8X08h3J"
+    },
+    {
+      "title": "Otra tarea más",
+      "dueDate": "2024-09-11T05:00:00.000Z",
+      "userId": "iLOUvwV",
+      "status": "todo",
+      "id": "JZ1UXzX",
+      "priority": "medium"
     }
   ],
   "users": [
@@ -136,7 +181,7 @@
       "id": "439d",
       "name": "Alexander",
       "email": "alex@example.com",
-      "password": "alex123*",
+      "password": "alex123&",
       "role": "user"
     },
     {
@@ -152,7 +197,35 @@
       "email": "esteban@service.com.co",
       "password": "esteban123$",
       "role": "user"
+    },
+    {
+      "name": "Julian Molina",
+      "email": "julian@example.com",
+      "password": "julian123&",
+      "role": "user",
+      "id": "iLOUvwV"
     }
   ],
-  "tokens": []
+  "tokens": [
+    {
+      "token": "a8072312-82e3-4d47-b879-2edaca4ca283",
+      "email": "foo@bar.com",
+      "id": 1
+    },
+    {
+      "token": "5620fcc6-253e-4d68-8a33-c08af0d15b61",
+      "email": "hola@mundo.com",
+      "id": 2
+    },
+    {
+      "token": "acf8a340-786b-4a75-b480-74789e225a89",
+      "email": "hola@mundo.com",
+      "id": 3
+    },
+    {
+      "token": "dbfdeaaa-44d1-4b51-8f33-b3b44d41d0ad",
+      "email": "admin@example.com",
+      "id": 4
+    }
+  ]
 }

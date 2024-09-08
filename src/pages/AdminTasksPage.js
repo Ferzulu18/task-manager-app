@@ -11,7 +11,7 @@ import {
   Tag,
 } from 'antd';
 import { PlusOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons';
-import { AuthContext } from '../context/AuthContext';
+import { AuthContext } from '../context/AuthContext.js';
 import { useNavigate, useLocation } from 'react-router-dom';
 import {
   fetchAndProcessTasks,
@@ -19,12 +19,10 @@ import {
   updateTask,
   deleteTask,
   fetchUsers,
-  pageSizeDefault,
-} from '../services/adminService';
+} from '../services/adminService.js';
 import dayjs from 'dayjs';
-import { disabledDate } from '../utils/dateUtils';
-import { handleError, handleSuccess } from '../utils/errorUtils';
-import './AdminTasksPage.css';
+import { disabledDate } from '../utils/date.js';
+import { handleError, handleSuccess } from '../utils/error.js';
 
 const { Option } = Select;
 
@@ -51,7 +49,7 @@ function AdminTasksPage() {
   const [sorter, setSorter] = useState({ field: 'dueDate', order: 'ascend' });
   const [pagination, setPagination] = useState({
     current: 1,
-    pageSize: pageSizeDefault,
+    pageSize: 10,
   });
 
   useEffect(() => {

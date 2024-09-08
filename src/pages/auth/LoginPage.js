@@ -1,10 +1,10 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Form, Input, Button, Modal } from 'antd';
-import FormButton from '../../components/FormButton';
+import FormButton from '../../components/FormButton.js';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { loginUser, sendResetPassword } from '../../services/authService';
-import { AuthContext } from '../../context/AuthContext';
-import { handleError, handleSuccess } from '../../utils/errorUtils';
+import { loginUser, recoverPassword } from '../../services/authService.js';
+import { AuthContext } from '../../context/AuthContext.js';
+import { handleError, handleSuccess } from '../../utils/error.js';
 
 function LoginPage() {
   const [form] = Form.useForm();
@@ -39,7 +39,7 @@ function LoginPage() {
 
   const handleForgotPassword = async (values) => {
     try {
-      await sendResetPassword(values.email);
+      await recoverPassword(values.email);
       handleSuccess('INF004');
       setIsModalVisible(false);
     } catch (error) {

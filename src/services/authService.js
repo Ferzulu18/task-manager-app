@@ -1,12 +1,14 @@
 import axios from 'axios';
-import { handleExcept } from '../utils/errorUtils';
-import { sendPasswordReset, generateUniqueToken } from '../utils/mailtrapUtils';
+import { v4 as uuidv4 } from 'uuid';
+import { handleExcept } from '../utils/error.js';
 
-const API_URL = 'http://localhost:5000';
+const apiUrl = `${process.env.REACT_APP_API_URL}/api/data`;
+const apiSendUrl = `${process.env.REACT_APP_API_URL}/api/send`;
+const mailApiToken = process.env.REACT_APP_MAIL_TOKEN || 'token-not-found';
 
 const getUserByEmail = async (email) => {
   try {
-    const response = await axios.get(`${API_URL}/users`, {
+    const response = await axios.get(`${apiUrl}/users`, {
       params: { email },
     });
     return response.data[0];
@@ -22,7 +24,7 @@ const updatePassword = async (email, newPassword) => {
       handleExcept(undefined, Error('Usuario no encontrado'));
     }
 
-    const response = await axios.patch(`${API_URL}/users/${user.id}`, {
+    const response = await axios.patch(`${apiUrl}/users/${user.id}`, {
       password: newPassword,
     });
 
@@ -35,7 +37,7 @@ const updatePassword = async (email, newPassword) => {
 export const registerUser = async (userData) => {
   try {
     const { confirm, ...userWithoutSensitiveInfo } = userData;
-    const response = await axios.post(`${API_URL}/users`, {
+    const response = await axios.post(`${apiUrl}/users`, {
       ...userWithoutSensitiveInfo,
       role: 'user',
     });
@@ -60,10 +62,10 @@ export const loginUser = async ({ email, password }) => {
   }
 };
 
-export const sendResetPassword = async (email) => {
+export const recoverPassword = async (email) => {
   try {
     const token = generateUniqueToken();
-    const response = await axios.post(`${API_URL}/tokens`, {
+    const response = await axios.post(`${apiUrl}/tokens`, {
       token: token,
       email: email,
     });
@@ -73,7 +75,18 @@ export const sendResetPassword = async (email) => {
         Error(`${response.status}: ${response.statusText}`)
       );
     }
-    await sendPasswordReset(token, email);
+    const url = `${process.env.REACT_APP_API_URL}/auth/reset?token=${token}`;
+    const responseSend = await axios.post(`${apiSendUrl}/reset`, {
+      url: url,
+      email: email,
+      token: mailApiToken,
+    });
+    if (responseSend.status !== 200) {
+      handleExcept(
+        undefined,
+        Error(`${responseSend.status}: ${responseSend.data.error}`)
+      );
+    }
   } catch (error) {
     handleExcept('EXC013', error);
   }
@@ -82,7 +95,7 @@ export const sendResetPassword = async (email) => {
 export const resetPassword = async (token, newPassword) => {
   let tokenData;
   try {
-    const response = await axios.get(`${API_URL}/tokens`, {
+    const response = await axios.get(`${apiUrl}/tokens`, {
       params: { token },
     });
     tokenData = response.data[0];
@@ -105,10 +118,15 @@ export const resetPassword = async (token, newPassword) => {
     // Siempre se debe eliminar el token (temporal).
     if (tokenData) {
       try {
-        await axios.delete(`${API_URL}/tokens/${tokenData.id}`);
+        await axios.delete(`${apiUrl}/tokens/${tokenData?.id}`);
       } catch (deleteError) {
         console.error('Error al eliminar el token:', deleteError);
       }
     }
   }
+};
+
+// Función para generar un token UUID 4
+const generateUniqueToken = () => {
+  return uuidv4();
 };

@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Form, Input, Button } from 'antd';
-import { resetPassword } from '../../services/authService';
-import { handleError, handleSuccess } from '../../utils/errorUtils';
+import { resetPassword } from '../../services/authService.js';
+import { handleError, handleSuccess } from '../../utils/error.js';
 
 const ResetPasswordPage = () => {
   const navigate = useNavigate();

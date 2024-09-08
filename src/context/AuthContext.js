@@ -4,7 +4,7 @@ import {
   getUser,
   storeLogin,
   clearLogin,
-} from '../utils/authUtils';
+} from '../utils/storage.js';
 
 export const AuthContext = createContext();
 

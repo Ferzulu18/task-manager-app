@@ -5,8 +5,8 @@ import {
   EditOutlined,
   DeleteOutlined,
 } from '@ant-design/icons';
-import { formatHumanDate } from '../utils/dateUtils';
-import { truncateText } from '../utils/textUtils';
+import { formatHumanDate } from '../utils/date.js';
+import { truncateText } from '../utils/text.js';
 
 function KanbanCard({
   item,

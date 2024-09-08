@@ -5,8 +5,8 @@ import {
   StarOutlined,
   // UsergroupAddOutlined,
 } from '@ant-design/icons';
-import CTAButton from '../components/CTAButton';
-import { AuthContext } from '../context/AuthContext';
+import CTAButton from '../components/CTAButton.js';
+import { AuthContext } from '../context/AuthContext.js';
 
 function HomePage() {
   const { authenticated, user } = useContext(AuthContext);

@@ -68,7 +68,7 @@ export const getResetContent = (url) => {
   return htmlContent;
 };
 
-export const getContactContent = ({ fullName, email, subject, message }) => {
+export const getContactContent = (name, email, subject, message) => {
   const htmlContent = `
     <!DOCTYPE html>
     <html lang="es">
@@ -109,7 +109,7 @@ export const getContactContent = ({ fullName, email, subject, message }) => {
     <body>
       <div class="container">
         <h1>Nuevo Mensaje de Contacto</h1>
-        <p><strong>Nombre Completo:</strong> ${fullName}</p>
+        <p><strong>Nombre Completo:</strong> ${name}</p>
         <p><strong>Correo Electrónico:</strong> ${email}</p>
         <p><strong>Asunto:</strong> ${subject}</p>
         <p><strong>Mensaje:</strong></p>

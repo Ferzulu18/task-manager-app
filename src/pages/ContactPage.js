@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { Form, Input } from 'antd';
 import { MailOutlined, PhoneOutlined, HomeOutlined } from '@ant-design/icons';
-import FormButton from '../components/FormButton';
-import { sendContactEmail } from '../utils/mailtrapUtils';
-import { handleError, handleSuccess } from '../utils/errorUtils';
+import FormButton from '../components/FormButton.js';
+import { sendContact } from '../services/userService.js';
+import { handleError, handleSuccess } from '../utils/error.js';
 
 const ContactPage = () => {
   const [loading, setLoading] = useState(false);
@@ -11,7 +11,7 @@ const ContactPage = () => {
   const handleContact = async (values) => {
     setLoading(true);
     try {
-      await sendContactEmail(values);
+      await sendContact(values);
       handleSuccess('INF001');
     } catch (error) {
       handleError('ERR001');
@@ -32,7 +32,7 @@ const ContactPage = () => {
       >
         <Form.Item
           label="Nombre Completo"
-          name="fullName"
+          name="name"
           rules={[
             { required: true, message: 'Por favor ingresa tu nombre completo' },
           ]}

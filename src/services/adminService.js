@@ -1,15 +1,13 @@
 import axios from 'axios';
-import { isWithinRange } from '../utils/dateUtils';
-import { handleExcept } from '../utils/errorUtils';
+import { isWithinRange } from '../utils/date.js';
+import { handleExcept } from '../utils/error.js';
 
-const API_URL = 'http://localhost:5000';
-
-export const pageSizeDefault = 10;
+const apiUrl = `${process.env.REACT_APP_API_URL}/api/data`;
 
 // Función para traer todos los usuarios (para la búsqueda en el formulario)
 export const fetchUsers = async () => {
   try {
-    const response = await axios.get(`${API_URL}/users`);
+    const response = await axios.get(`${apiUrl}/users`);
     return response.data;
   } catch (error) {
     handleExcept('EXC007', error);
@@ -19,7 +17,7 @@ export const fetchUsers = async () => {
 // Función para consultar todos los usuarios
 export const fetchUsersByIds = async (userIds = []) => {
   try {
-    const usersResponse = await axios.get(`${API_URL}/users`);
+    const usersResponse = await axios.get(`${apiUrl}/users`);
     return usersResponse.data.filter((user) => userIds.includes(user.id));
   } catch (error) {
     handleExcept('EXC007', error);
@@ -34,7 +32,7 @@ export const fetchAndProcessTasks = async (
 ) => {
   try {
     // 1. Traer todas las tareas
-    const tasksResponse = await axios.get(`${API_URL}/tasks`);
+    const tasksResponse = await axios.get(`${apiUrl}/tasks`);
     let tasks = tasksResponse.data;
 
     // 2. Traer todos los usuarios y asociarlos a las tareas
@@ -101,7 +99,7 @@ export const fetchAndProcessTasks = async (
 
     // 5. Paginación
     pagination.total = processedTasks.length;
-    const { current = 1, pageSize = pageSizeDefault } = pagination;
+    const { current = 1, pageSize = 10 } = pagination;
     const startIndex = (current - 1) * pageSize;
     const endIndex = current * pageSize;
     const paginatedTasks = processedTasks.slice(startIndex, endIndex);
@@ -117,7 +115,7 @@ export const createTask = async (task) => {
   try {
     const { userEmail, userName, userRole, ...userWithoutSensitiveInfo } = task;
     const response = await axios.post(
-      `${API_URL}/tasks`,
+      `${apiUrl}/tasks`,
       userWithoutSensitiveInfo
     );
     return response.data;
@@ -131,7 +129,7 @@ export const updateTask = async (taskId, task) => {
   try {
     const { userEmail, userName, userRole, ...userWithoutSensitiveInfo } = task;
     const response = await axios.put(
-      `${API_URL}/tasks/${taskId}`,
+      `${apiUrl}/tasks/${taskId}`,
       userWithoutSensitiveInfo
     );
     return response.data;
@@ -143,7 +141,7 @@ export const updateTask = async (taskId, task) => {
 // Función para eliminar una tarea
 export const deleteTask = async (taskId) => {
   try {
-    await axios.delete(`${API_URL}/tasks/${taskId}`);
+    await axios.delete(`${apiUrl}/tasks/${taskId}`);
   } catch (error) {
     handleExcept('EXC004', error);
   }

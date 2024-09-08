@@ -1,9 +1,9 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Form, Input, Button } from 'antd';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { registerUser } from '../../services/authService';
-import { AuthContext } from '../../context/AuthContext';
-import { handleError, handleSuccess } from '../../utils/errorUtils';
+import { registerUser } from '../../services/authService.js';
+import { AuthContext } from '../../context/AuthContext.js';
+import { handleError, handleSuccess } from '../../utils/error.js';
 
 function RegisterPage() {
   const navigate = useNavigate();
