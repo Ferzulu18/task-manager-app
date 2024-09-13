@@ -52,7 +52,9 @@ function AdminTasksPage() {
     pageSize: 10,
   });
 
+  // Efecto que se ejecuta al montar el componente o cuando cambian los filtros, el orden o la paginación
   useEffect(() => {
+    // Función para obtener las tareas con los filtros, orden y paginación aplicados
     const fetchTasksAndUsers = async () => {
       try {
         const tasks = await fetchAndProcessTasks(filters, sorter, pagination);
@@ -62,6 +64,7 @@ function AdminTasksPage() {
       }
     };
 
+    // Función para obtener la lista de usuarios
     const fetchUsersList = async () => {
       try {
         const users = await fetchUsers();
@@ -71,15 +74,17 @@ function AdminTasksPage() {
       }
     };
 
+    // Verifica si el usuario está autenticado y tiene rol de admin
     if (!authenticated || !user || user.role !== 'admin') {
       const from = location.state?.from?.pathname || '/';
-      navigate(from);
+      navigate(from); // Redirige a la página de origen o a la raíz si no está autenticado
     } else {
-      fetchTasksAndUsers();
+      fetchTasksAndUsers(); // Obtiene las tareas y usuarios si está autenticado
       fetchUsersList();
     }
   }, [authenticated, navigate, location, user, filters, sorter, pagination]);
 
+  // Función para actualizar los datos de las tareas
   const refreshTasks = async () => {
     try {
       const tasks = await fetchAndProcessTasks(filters, sorter, pagination);
@@ -89,11 +94,13 @@ function AdminTasksPage() {
     }
   };
 
+  // Muestra el modal para crear o editar una tarea
   const showModal = (task = {}) => {
     setTask(task);
     setIsModalVisible(true);
   };
 
+  // Cierra el modal y reinicia el formulario de la tarea
   const handleCancel = () => {
     setIsModalVisible(false);
     setTask({
@@ -106,6 +113,7 @@ function AdminTasksPage() {
     });
   };
 
+  // Maneja la creación o actualización de una tarea
   const handleOk = async () => {
     if (!task.title) {
       handleError('ERR010');
@@ -114,9 +122,11 @@ function AdminTasksPage() {
 
     try {
       if (task.id) {
+        // Actualiza la tarea existente
         await updateTask(task.id, task);
         handleSuccess('INF006');
       } else {
+        // Crea una nueva tarea
         await createTask(task);
         handleSuccess('INF007');
       }
@@ -129,12 +139,13 @@ function AdminTasksPage() {
         userId: '',
         id: null,
       });
-      refreshTasks();
+      refreshTasks(); // Refresca la lista de tareas después de crear o actualizar
     } catch (error) {
       handleError('ERR011');
     }
   };
 
+  // Confirma la eliminación de una tarea con un modal de confirmación
   const confirmDelete = (taskId) => {
     Modal.confirm({
       title: 'Confirmar',
@@ -145,7 +156,7 @@ function AdminTasksPage() {
         try {
           await deleteTask(taskId);
           handleSuccess('INF008');
-          refreshTasks();
+          refreshTasks(); // Refresca la lista de tareas después de eliminar
         } catch (error) {
           handleError('ERR012');
         }
@@ -153,24 +164,29 @@ function AdminTasksPage() {
     });
   };
 
+  // Maneja el cambio de fecha para la tarea
   const handleDateChange = (date) => {
     setTask({ ...task, dueDate: date ? date.toISOString() : null });
   };
 
+  // Actualiza los filtros según la entrada del usuario
   const handleFilterChange = (value, type) => {
     setFilters({ ...filters, [type]: value });
   };
 
+  // Actualiza el filtro de rango de fechas
   const handleDateRangeChange = (dates) => {
     setFilters({ ...filters, dateRange: dates });
   };
 
+  // Maneja los cambios en el ordenamiento y la paginación de la tabla
   const handleSortChange = (pagination, filters, sorter) => {
     setSorter({ field: sorter.field, order: sorter.order });
     setPagination(pagination);
-    refreshTasks();
+    refreshTasks(); // Refresca la lista de tareas con el nuevo orden y paginación
   };
 
+  // Define las columnas de la tabla con su configuración
   const columns = [
     {
       title: 'Título',
@@ -236,14 +252,17 @@ function AdminTasksPage() {
     },
   ];
 
+  // Etiquetas para los niveles de prioridad
   const priorityLabels = {
     high: 'Alta',
     medium: 'Media',
     low: 'Baja',
   };
 
+  // Renderiza el componente
   return (
     <div className="p-4">
+      {/* Controles de filtrado y búsqueda */}
       <Row gutter={[16, 16]} className="mb-4">
         <Col>
           <Input
@@ -276,6 +295,7 @@ function AdminTasksPage() {
         </Col>
       </Row>
 
+      {/* Tabla que muestra las tareas */}
       <Table
         columns={columns}
         dataSource={tasksData}
@@ -284,32 +304,30 @@ function AdminTasksPage() {
         pagination={pagination}
       />
 
+      {/* Modal para la creación o edición de tareas */}
       <Modal
         title={task.id ? 'Modificar Tarea' : 'Crear Tarea'}
         open={isModalVisible}
         onOk={handleOk}
         onCancel={handleCancel}
-        okText={task.id ? 'Modificar' : 'Crear'}
-        cancelText="Cancelar"
       >
         <Input
           placeholder="Título"
           value={task.title}
           onChange={(e) => setTask({ ...task, title: e.target.value })}
-          className="mt-2 w-full"
         />
         <Input.TextArea
           placeholder="Descripción"
           value={task.description}
           onChange={(e) => setTask({ ...task, description: e.target.value })}
-          className="mt-2 w-full"
+          className="mt-2"
         />
         <DatePicker
           placeholder="Fecha de Vencimiento"
           value={task.dueDate ? dayjs(task.dueDate) : null}
           onChange={handleDateChange}
-          disabledDate={disabledDate}
           className="mt-2 w-full"
+          disabledDate={disabledDate}
         />
         <Select
           placeholder="Prioridad"
@@ -317,12 +335,14 @@ function AdminTasksPage() {
           onChange={(value) => setTask({ ...task, priority: value })}
           className="mt-2 w-full"
         >
-          <Option value="high">Alta</Option>
-          <Option value="medium">Media</Option>
-          <Option value="low">Baja</Option>
+          {Object.entries(priorityLabels).map(([key, label]) => (
+            <Option key={key} value={key}>
+              {label}
+            </Option>
+          ))}
         </Select>
         <Select
-          placeholder="Asignar a Usuario"
+          placeholder="Asignar Usuario"
           value={task.userId}
           onChange={(value) => setTask({ ...task, userId: value })}
           className="mt-2 w-full"

@@ -6,17 +6,20 @@ import { sendContact } from '../services/userService.js';
 import { handleError, handleSuccess } from '../utils/error.js';
 
 const ContactPage = () => {
+  // Estado para gestionar el estado de carga mientras se envía el mensaje.
   const [loading, setLoading] = useState(false);
 
+  // Función para manejar el envío del formulario de contacto.
   const handleContact = async (values) => {
-    setLoading(true);
+    setLoading(true); // Activa el estado de carga.
     try {
+      // Envía los datos del formulario al servidor.
       await sendContact(values);
-      handleSuccess('INF001');
+      handleSuccess('INF001'); // Muestra un mensaje de éxito.
     } catch (error) {
-      handleError('ERR001');
+      handleError('ERR001'); // Muestra un mensaje de error en caso de fallo.
     } finally {
-      setLoading(false);
+      setLoading(false); // Desactiva el estado de carga.
     }
   };
 
@@ -24,6 +27,7 @@ const ContactPage = () => {
     <div className="p-5 max-w-4xl mx-auto">
       <h1 className="text-4xl font-bold mb-3">Contáctenos</h1>
       <hr className="w-24 border-2 border-blue-900 mb-8" />
+
       <Form
         name="contact"
         onFinish={handleContact}

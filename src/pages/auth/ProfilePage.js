@@ -6,8 +6,10 @@ import { AuthContext } from '../../context/AuthContext.js';
 const { Title, Text } = Typography;
 
 function ProfilePage() {
+  // Obtiene la información del usuario desde el contexto de autenticación
   const { user } = useContext(AuthContext);
 
+  // Si no hay usuario autenticado, no renderiza nada
   if (!user) return null;
 
   return (

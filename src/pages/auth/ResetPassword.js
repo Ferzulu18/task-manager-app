@@ -11,13 +11,14 @@ const ResetPasswordPage = () => {
     new URLSearchParams(window.location.search).get('token')
   );
 
+  // Maneja la lógica para restablecer la contraseña usando el token de la URL
   const handleResetPassword = async (values) => {
     try {
       await resetPassword(token, values.password);
-      handleSuccess('INF005');
-      navigate('/auth/login');
+      handleSuccess('INF005'); // Muestra un mensaje de éxito si el restablecimiento es exitoso
+      navigate('/auth/login'); // Redirige al usuario a la página de inicio de sesión después de un restablecimiento exitoso
     } catch (error) {
-      handleError('ERR006');
+      handleError('ERR006'); // Muestra un mensaje de error si ocurre un problema durante el proceso
     }
   };
 
@@ -62,6 +63,7 @@ const ResetPasswordPage = () => {
               },
               ({ getFieldValue }) => ({
                 validator(_, value) {
+                  // Verifica que la contraseña de confirmación coincida con la contraseña ingresada
                   if (!value || getFieldValue('password') === value) {
                     return Promise.resolve();
                   }

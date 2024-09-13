@@ -11,6 +11,7 @@ function RegisterPage() {
   const { authenticated } = useContext(AuthContext);
   const [loading, setLoading] = useState(false);
 
+  // Redirige al usuario autenticado a la página de destino después del registro
   useEffect(() => {
     if (authenticated) {
       const from = location.state?.from?.pathname || '/';
@@ -18,6 +19,7 @@ function RegisterPage() {
     }
   }, [authenticated, navigate, location]);
 
+  // Maneja el registro del usuario y la navegación a la página de inicio de sesión
   const handleRegister = async (values) => {
     setLoading(true);
     try {
@@ -39,7 +41,7 @@ function RegisterPage() {
   return (
     <div className="flex items-center justify-center h-screen bg-gray-100 p-4">
       <Form
-        onFinish={handleRegister}
+        onFinish={handleRegister} // Se ejecuta al enviar el formulario de registro
         className="w-full max-w-md bg-white p-6 rounded-lg shadow-md"
         layout="vertical"
       >
@@ -101,6 +103,7 @@ function RegisterPage() {
             { required: true, message: 'Por favor confirma tu contraseña' },
             ({ getFieldValue }) => ({
               validator(_, value) {
+                // Valida que las contraseñas coincidan
                 if (!value || getFieldValue('password') === value) {
                   return Promise.resolve();
                 }
@@ -116,7 +119,7 @@ function RegisterPage() {
           <Button
             type="primary"
             htmlType="submit"
-            loading={loading}
+            loading={loading} // Muestra el estado de carga mientras se procesa el formulario
             className="w-full"
           >
             Registrarse

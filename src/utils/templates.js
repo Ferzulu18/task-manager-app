@@ -1,4 +1,9 @@
+// Genera contenido HTML para emails específicos como recuperación de contraseña y mensajes de contacto.
+// Estas funciones retornan una estructura HTML personalizada que puede ser enviada a los usuarios vía email.
+
 export const getResetContent = (url) => {
+  // Genera el contenido HTML para el correo de recuperación de contraseña.
+  // La URL proporcionada es la que se utilizará para cambiar la contraseña del usuario.
   const htmlContent = `
     <!DOCTYPE html>
     <html lang="es">
@@ -69,6 +74,8 @@ export const getResetContent = (url) => {
 };
 
 export const getContactContent = (name, email, subject, message) => {
+  // Genera el contenido HTML para el correo de notificación de un nuevo mensaje de contacto.
+  // Los parámetros incluyen el nombre del remitente, email, asunto y mensaje.
   const htmlContent = `
     <!DOCTYPE html>
     <html lang="es">
