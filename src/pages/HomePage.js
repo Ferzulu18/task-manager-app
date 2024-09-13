@@ -98,16 +98,6 @@ function HomePage() {
               </p>
             </Card>
           </Col>
-          {/* <Col span={8}>
-            <Card className="text-center p-6 border border-gray-300 rounded-lg">
-              <UsergroupAddOutlined className="text-blue-500 text-3xl mb-4" />
-              <h3 className="text-xl font-bold mb-2">Colaboración</h3>
-              <p className="text-gray-600">
-                Colabora con otros usuarios y gestiona proyectos en equipo de
-                manera eficiente.
-              </p>
-            </Card>
-          </Col> */}
         </Row>
       </div>
 

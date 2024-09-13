@@ -6,6 +6,8 @@ const mailApiUrl = 'https://sandbox.api.mailtrap.io/api/send/2243846';
 const mailSenderName = 'Task Manager Admin';
 const mailSenderEmail = 'admin@example.com';
 
+// Función para enviar un correo de recuperación de contraseña.
+// Envía un correo al usuario con un enlace para restablecer su contraseña.
 export const sendResetPassword = async (resetData) => {
   const { url, email, token } = resetData;
 
@@ -30,6 +32,7 @@ export const sendResetPassword = async (resetData) => {
       }
     );
 
+    // Verifica si la respuesta del servidor es exitosa (código de estado 200).
     if (response.status !== 200) {
       handleExcept(
         undefined,
@@ -44,6 +47,8 @@ export const sendResetPassword = async (resetData) => {
   }
 };
 
+// Función para enviar un correo de contacto desde el usuario.
+// Envía un mensaje de contacto al administrador del sistema.
 export const sendContactEmail = async (contactData) => {
   const { name, email, subject, message, token } = contactData;
 
@@ -68,6 +73,7 @@ export const sendContactEmail = async (contactData) => {
       }
     );
 
+    // Verifica si la respuesta del servidor es exitosa (código de estado 200).
     if (response.status !== 200) {
       handleExcept(
         undefined,

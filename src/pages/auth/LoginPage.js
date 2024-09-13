@@ -13,6 +13,7 @@ function LoginPage() {
   const { authenticated, login } = useContext(AuthContext);
   const [isModalVisible, setIsModalVisible] = useState(false);
 
+  // Redirige al usuario a la página de origen si está autenticado
   useEffect(() => {
     if (authenticated) {
       const from = location.state?.from?.pathname || '/';
@@ -20,6 +21,8 @@ function LoginPage() {
     }
   }, [authenticated, navigate, location]);
 
+  // Maneja el proceso de inicio de sesión
+  // Si el usuario es autenticado, se actualiza el contexto y se redirige al usuario
   const handleLogin = async (values) => {
     try {
       const user = await loginUser(values);
@@ -37,6 +40,8 @@ function LoginPage() {
     }
   };
 
+  // Maneja el proceso de recuperación de contraseña
+  // Envía un correo de recuperación y oculta el modal en caso de éxito
   const handleForgotPassword = async (values) => {
     try {
       await recoverPassword(values.email);

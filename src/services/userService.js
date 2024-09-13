@@ -5,7 +5,8 @@ const apiUrl = `${process.env.REACT_APP_API_URL}/api/data`;
 const apiSendUrl = `${process.env.REACT_APP_API_URL}/api/send`;
 const mailApiToken = process.env.REACT_APP_MAIL_TOKEN || 'token-not-found';
 
-// Obtener todas las tareas de un usuario específico
+// Función para obtener todas las tareas asociadas a un usuario específico.
+// Realiza una solicitud GET al endpoint de tareas filtrando por el ID del usuario.
 export const fetchTasks = async (userId) => {
   try {
     const response = await axios.get(`${apiUrl}/tasks`, {
@@ -17,7 +18,8 @@ export const fetchTasks = async (userId) => {
   }
 };
 
-// Crear una tarea
+// Función para crear una nueva tarea.
+// Envía los datos de la tarea al servidor con el estado inicial 'todo'.
 export const createTask = async (task) => {
   try {
     const response = await axios.post(`${apiUrl}/tasks`, {
@@ -30,7 +32,8 @@ export const createTask = async (task) => {
   }
 };
 
-// Modificar una tarea
+// Función para modificar una tarea existente.
+// Actualiza los campos especificados de una tarea identificada por su ID.
 export const updateTask = async (taskId, updates) => {
   try {
     const response = await axios.patch(`${apiUrl}/tasks/${taskId}`, updates);
@@ -40,7 +43,8 @@ export const updateTask = async (taskId, updates) => {
   }
 };
 
-// Modificar el estado de una tarea
+// Función para modificar el estado de una tarea.
+// Actualiza el estado de una tarea identificada por su ID.
 export const updateTaskStatus = async (taskId, status) => {
   try {
     const response = await axios.patch(`${apiUrl}/tasks/${taskId}`, {
@@ -52,7 +56,8 @@ export const updateTaskStatus = async (taskId, status) => {
   }
 };
 
-// Eliminar una tarea
+// Función para eliminar una tarea.
+// Envía una solicitud DELETE para eliminar una tarea identificada por su ID.
 export const deleteTask = async (taskId) => {
   try {
     await axios.delete(`${apiUrl}/tasks/${taskId}`);
@@ -61,7 +66,8 @@ export const deleteTask = async (taskId) => {
   }
 };
 
-// Verificar el límite de tareas, máximo 50.
+// Función para verificar si el límite de tareas para un usuario ha sido alcanzado.
+// Verifica si el número de tareas del usuario es igual o superior a 50.
 export const checkTaskLimit = async (userId) => {
   try {
     const response = await axios.get(`${apiUrl}/tasks`, {
@@ -74,6 +80,8 @@ export const checkTaskLimit = async (userId) => {
   }
 };
 
+// Función para enviar un mensaje de contacto.
+// Envía los datos de contacto al servidor de correo con un token de autenticación.
 export const sendContact = async (contactData) => {
   try {
     const responseSend = await axios.post(`${apiSendUrl}/contact`, {

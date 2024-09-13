@@ -15,17 +15,25 @@ import { AuthContext } from '../context/AuthContext.js';
 import './Header.css';
 
 function Header() {
+  // State para controlar la visibilidad del menú lateral (Drawer)
   const [visible, setVisible] = useState(false);
+
+  // Hook para la navegación programática
   const navigate = useNavigate();
+
+  // Contexto de autenticación para obtener estado de autenticación y funciones de usuario
   const { authenticated, user, logout } = useContext(AuthContext);
 
+  // Hook para manejar cambios en la autenticación y el usuario (vacío en esta versión)
   useEffect(() => {}, [authenticated, user]);
 
+  // Función para manejar el cierre de sesión y redireccionar al login
   const handleLogout = () => {
-    logout();
-    navigate('/auth/login');
+    logout(); // Llama a la función de cierre de sesión del contexto
+    navigate('/auth/login'); // Redirige al login
   };
 
+  // Elementos del menú desplegable del usuario
   const menuItems = [
     {
       key: 'profile',
@@ -36,10 +44,11 @@ function Header() {
       key: 'logout',
       label: 'Cerrar Sesión',
       icon: <LogoutOutlined />,
-      onClick: handleLogout,
+      onClick: handleLogout, // Llama a la función de cierre de sesión al hacer clic
     },
   ];
 
+  // Configuración del menú desplegable del usuario
   const menu = {
     items: menuItems.map((item) => ({
       key: item.key,
@@ -49,6 +58,7 @@ function Header() {
     })),
   };
 
+  // Elementos del menú de navegación basado en el rol del usuario
   const navItems = [
     {
       key: 'home',
@@ -79,8 +89,9 @@ function Header() {
       label: <NavLink to="/contact">Contáctenos</NavLink>,
       icon: <MessageOutlined />,
     },
-  ].filter(Boolean);
+  ].filter(Boolean); // Filtra los elementos falsy (para usuarios no autenticados o sin rol)
 
+  // Configuración del menú de navegación con estilos
   const navMenu = navItems.map((item) => ({
     key: item.key,
     label: item.label,
@@ -89,6 +100,7 @@ function Header() {
       'hover:text-[#001529] hover:bg-[#f0f0f0] border-b-2 border-transparent hover:border-[#1890ff]',
   }));
 
+  // Función para alternar la visibilidad del Drawer
   const toggleDrawer = () => {
     setVisible(!visible);
   };

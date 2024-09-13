@@ -19,9 +19,14 @@ import { handleError, handleSuccess } from '../utils/error.js';
 const { Option } = Select;
 
 function UserTasksPage() {
+  // Extrae el estado de autenticación y el usuario del contexto de autenticación.
   const { authenticated, user } = useContext(AuthContext);
+
+  // Hooks para navegación y ubicación en la aplicación.
   const navigate = useNavigate();
   const location = useLocation();
+
+  // Estado para controlar la visibilidad del modal y almacenar los datos de la tarea.
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [task, setTask] = useState({
     id: null,
@@ -30,32 +35,42 @@ function UserTasksPage() {
     dueDate: null,
     priority: '',
   });
+
+  // Estado para gestionar la tarea que se está arrastrando.
   const [draggedTask, setDraggedTask] = useState(null);
+
+  // Estado para almacenar las tareas organizadas por su estado.
   const [tasks, setTasks] = useState({
     todo: [],
     wip: [],
     done: [],
   });
+
+  // Colores para las prioridades de las tareas.
   const priorityColors = {
     high: '#ff4d4f',
     medium: '#faad14',
     low: '#36cfc9',
   };
 
+  // Efecto para cargar las tareas del usuario cuando el componente se monta o cambian las dependencias.
   useEffect(() => {
     const fetchUserTasks = async () => {
       try {
+        // Llama al servicio para obtener las tareas del usuario.
         const userTasks = await fetchTasks(user.id);
+        // Organiza las tareas por estado.
         setTasks({
           todo: userTasks.filter((task) => task.status === 'todo'),
           wip: userTasks.filter((task) => task.status === 'wip'),
           done: userTasks.filter((task) => task.status === 'done'),
         });
       } catch (error) {
-        handleError('ERR007');
+        handleError('ERR007'); // Maneja cualquier error al obtener las tareas.
       }
     };
 
+    // Redirige si el usuario no está autenticado o no es del rol correcto.
     if (!authenticated || !user || user.role !== 'user') {
       const from = location.state?.from?.pathname || '/';
       navigate(from);
@@ -64,8 +79,10 @@ function UserTasksPage() {
     }
   }, [authenticated, navigate, location, user]);
 
+  // Función para actualizar las tareas del usuario.
   const refreshUserTasks = async () => {
     try {
+      // Vuelve a obtener las tareas del usuario y organiza por estado.
       const userTasks = await fetchTasks(user.id);
       setTasks({
         todo: userTasks.filter((task) => task.status === 'todo'),
@@ -73,15 +90,17 @@ function UserTasksPage() {
         done: userTasks.filter((task) => task.status === 'done'),
       });
     } catch (error) {
-      handleError('ERR007');
+      handleError('ERR007'); // Maneja cualquier error al obtener las tareas.
     }
   };
 
+  // Muestra el modal para crear o editar una tarea.
   const showModal = (task = {}) => {
     setTask(task);
     setIsModalVisible(true);
   };
 
+  // Cierra el modal y resetea el estado de la tarea.
   const handleCancel = () => {
     setIsModalVisible(false);
     setTask({
@@ -93,33 +112,36 @@ function UserTasksPage() {
     });
   };
 
+  // Maneja la acción de guardar o modificar una tarea.
   const handleOk = async () => {
     if (!task.title) {
-      handleError('ERR010');
+      handleError('ERR010'); // Muestra un error si el título está vacío.
       return;
     }
 
     if (task.id) {
+      // Actualiza la tarea si tiene un ID existente.
       try {
         await updateTask(task.id, { ...task, userId: user.id });
-        handleSuccess('INF006');
+        handleSuccess('INF006'); // Muestra un mensaje de éxito.
       } catch (error) {
-        handleError('ERR011');
+        handleError('ERR011'); // Maneja cualquier error al actualizar.
       }
     } else {
+      // Crea una nueva tarea si no tiene un ID.
       try {
         const limitReached = await checkTaskLimit(user.id);
         if (limitReached) {
-          handleError('ERR013');
+          handleError('ERR013'); // Muestra un error si se ha alcanzado el límite de tareas.
           return;
         }
         await createTask({ ...task, userId: user.id, status: 'todo' });
-        handleSuccess('INF007');
+        handleSuccess('INF007'); // Muestra un mensaje de éxito.
       } catch (error) {
-        handleError('ERR011');
+        handleError('ERR011'); // Maneja cualquier error al crear.
       }
     }
-    setIsModalVisible(false);
+    setIsModalVisible(false); // Cierra el modal.
     setTask({
       title: '',
       description: '',
@@ -127,26 +149,29 @@ function UserTasksPage() {
       priority: '',
       id: null,
     });
-    refreshUserTasks();
+    refreshUserTasks(); // Refresca la lista de tareas.
   };
 
+  // Maneja el inicio del arrastre de una tarea.
   const handleDragStart = (task) => {
     setDraggedTask(task);
   };
 
+  // Maneja el soltar una tarea en una nueva columna.
   const handleDrop = async (status) => {
     if (draggedTask) {
       try {
         await updateTaskStatus(draggedTask.id, status);
-        handleSuccess('INF009');
+        handleSuccess('INF009'); // Muestra un mensaje de éxito.
         setDraggedTask(null);
-        refreshUserTasks();
+        refreshUserTasks(); // Refresca la lista de tareas.
       } catch (error) {
-        handleError('ERR014');
+        handleError('ERR014'); // Maneja cualquier error al actualizar el estado.
       }
     }
   };
 
+  // Muestra una confirmación antes de eliminar una tarea.
   const confirmDelete = (taskId) => {
     Modal.confirm({
       title: 'Confirmar',
@@ -156,15 +181,16 @@ function UserTasksPage() {
       onOk: async () => {
         try {
           await deleteTask(taskId);
-          handleSuccess('INF008');
-          refreshUserTasks();
+          handleSuccess('INF008'); // Muestra un mensaje de éxito.
+          refreshUserTasks(); // Refresca la lista de tareas.
         } catch (error) {
-          handleError('ERR012');
+          handleError('ERR012'); // Maneja cualquier error al eliminar.
         }
       },
     });
   };
 
+  // Maneja el cambio de fecha de vencimiento de una tarea.
   const handleDateChange = (date) => {
     setTask({ ...task, dueDate: date ? date.toISOString() : null });
   };
